@@ -13,7 +13,7 @@ class DevicePullHandler(Ipull):
     async def PullAndSave(self):
         s = System(self._Ipull__logger)
         data =await s.SendHttpRequestTotUrl(self._Ipull__http, "https://iot-dev.truesight.asia/rpc/iot-ebe/sync/list-device", {})
-        if data == []:
+        if data == None:
             self._Ipull__logger.debug("have no data from cloud")
             print("have no data from cloud")
             return
@@ -22,4 +22,4 @@ class DevicePullHandler(Ipull):
         
     def __saveToDb(self, data: list):
         db = Db()
-        db.Services.DeviceServices.AddManyDevice(data)
+        db.Services.DeviceServices.AddManyDeviceWithCustomData(data)

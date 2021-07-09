@@ -15,6 +15,7 @@ import http
 import json
 from Constract.Ipull import Ipull
 from PullHandler.DevicePullHandler import DevicePullHandler
+from PullHandler.GroupingPullHandler import GroupingPullHandler
 
 class RdHc():
     __httpServices: Http
@@ -22,7 +23,9 @@ class RdHc():
     __cache : Cache
     __lock: threading.Lock
     __logger: logging.Logger
+    
     __devicePullHandler: Ipull
+    __groupingPullHandler: Ipull
  
     def __init__(self, log: logging.Logger):
         self.__logger = log
@@ -30,7 +33,10 @@ class RdHc():
         self.__db = Db()
         self.__cache = Cache()
         self.__lock = threading.Lock()
+        
         self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
+        self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
+
       
     #-----------load userdata from db----------------------------------------------------------
     def __HcLoadUserData(self):
@@ -42,8 +48,9 @@ class RdHc():
       
     async def Run(self):
         self.__HcLoadUserData()
-        task1 = asyncio.ensure_future(self.__devicePullHandler.PullAndSave())
-        tasks = [task1]
+        await self.__devicePullHandler.PullAndSave()
+        task2 = asyncio.ensure_future(self.__groupingPullHandler.PullAndSave())
+        tasks = [task2]
         await asyncio.gather(*tasks)
         return
 

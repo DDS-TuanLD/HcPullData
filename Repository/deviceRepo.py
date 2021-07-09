@@ -30,11 +30,11 @@ class deviceRepo():
         }
         self.__context.execute(ins, values)
         
-    def InsertMany(self, l: list):
+    def InsertManyWithCustomData(self, l: list):
         ins = self.__deviceTable.insert()
         values = []
         for i in range(len(l)):
-            t = self.__timeSplit(time=l[i].get('updateAt', datetime.datetime.now()))
+            t = self.__timeSplit(time=datetime.datetime.strptime(l[i].get('updatedAt'), '%Y-%m-%dT%H:%M:%S.%fZ'))
             updateDay = t[0]
             updateTime = t[1]                
             d = {
@@ -46,14 +46,22 @@ class deviceRepo():
                 'DeviceTypeId': l[i].get('deviceTypeId', None),
                 'UpdateDay': updateDay,
                 'UpdateTime': updateTime,
-                'StatusId': l[i].get('statusId'),
+                'StatusId': l[i].get('statusId', None),
                 'Owner': l[i].get('Owner', None)
             }
             values.append(d)
         if values == []:
             return
-        self.__context.execute(ins, values)
-        
+        try:
+            self.__context.execute(ins, values)
+        except Exception as err:
+            print(err)
+            
+    def FindWithCondition(self, condition: BinaryExpression):
+        ins = self.__deviceTable.select().where(condition)
+        rel = self.__context.execute(ins)
+        return rel   
+    
     def __timeSplit(self, time: datetime.datetime):
         m = str(time.month)
         if int(m) < 10:

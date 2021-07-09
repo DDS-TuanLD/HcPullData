@@ -1,1 +1,1 @@
-DROP Table Device
+DELETE FROM Device;
