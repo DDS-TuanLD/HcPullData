@@ -1,5 +1,4 @@
 from HcServices.Http import Http
-
 import asyncio
 from Database.Db import Db
 import aiohttp
@@ -16,6 +15,10 @@ import json
 from Constract.Ipull import Ipull
 from PullHandler.DevicePullHandler import DevicePullHandler
 from PullHandler.GroupingPullHandler import GroupingPullHandler
+from PullHandler.RulePullHandler import RulePullHandler
+from Handler.MqttDataHandler import MqttDataHandler
+from HcServices.Mqtt import Mqtt
+from Constract.Itransport import Itransport
 
 class RdHc():
     __httpServices: Http
@@ -23,9 +26,11 @@ class RdHc():
     __cache : Cache
     __lock: threading.Lock
     __logger: logging.Logger
-    
+    __mqttServices: Itransport
+    __mqttHandler: MqttDataHandler
     __devicePullHandler: Ipull
     __groupingPullHandler: Ipull
+    __rulePullHandler: Ipull
  
     def __init__(self, log: logging.Logger):
         self.__logger = log
@@ -33,27 +38,50 @@ class RdHc():
         self.__db = Db()
         self.__cache = Cache()
         self.__lock = threading.Lock()
-        
+        self.__mqttServices = Mqtt(self.__logger)
+        self.__mqttHandler =  MqttDataHandler(self.__logger, self.__mqttServices)
         self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
         self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
-
-      
-    #-----------load userdata from db----------------------------------------------------------
-    def __HcLoadUserData(self):
-        userData = self.__db.Services.UserdataServices.FindUserDataById(id=1)
-        dt = userData.first()
-        if dt != None:
-            self.__cache.EndUserId = dt["EndUserProfileId"]
-            self.__cache.RefreshToken = dt["RefreshToken"]  
+        self.__rulePullHandler = RulePullHandler(self.__logger, self.__httpServices)
      
+    async def __HcHandlerMqttData(self):
+        """ This function handler data received in queue
+        """
+        while True:
+            await asyncio.sleep(0.1)
+            if self.__mqttServices.mqttDataQueue.empty() == False:
+                with self.__lock:
+                    item = self.__mqttServices.mqttDataQueue.get()
+                    self.__mqttHandler.Handler(item)
+                    self.__mqttServices.mqttDataQueue.task_done()
+                if self.__cache.EndUserId != "" and self.__cache.RefreshToken != "":
+                    return
+         
+    async def __HcDevicePullHandler(self):
+        while self.__cache.EndUserId == "" or self.__cache.RefreshToken == "":
+            await asyncio.sleep(1)
+        await self.__devicePullHandler.PullAndSave()
+        self.__groupingPullHandler.DeExhibit()
     
+    async def __HcGroupingPullHandler(self):
+        while self.__groupingPullHandler.ExhibitStatus() != False:
+            await asyncio.sleep(1)  
+        await self.__groupingPullHandler.PullAndSave()
+        
+    async def __HcRulePullHandler(self):
+        # while self.__cache.EndUserId == "" or self.__cache.RefreshToken == "":
+        #     await asyncio.sleep(1)
+        await self.__rulePullHandler.PullAndSave()
+                    
     async def Run(self):
-        await asyncio.sleep(1)
-        # self.__HcLoadUserData()
-        # await self.__devicePullHandler.PullAndSave()
-        # task2 = asyncio.ensure_future(self.__groupingPullHandler.PullAndSave())
-        # tasks = [task2]
-        # await asyncio.gather(*tasks)
+        #await self.__mqttServices.Init()
+        #task1 = asyncio.ensure_future(self.__HcHandlerMqttData())     
+        # task2 = asyncio.ensure_future(self.__HcDevicePullHandler())
+        # task3 = asyncio.ensure_future(self.__HcGroupingPullHandler())
+        task4 = asyncio.ensure_future(self.__HcRulePullHandler())
+
+        tasks = [task4]
+        await asyncio.gather(*tasks)
         return
 
         

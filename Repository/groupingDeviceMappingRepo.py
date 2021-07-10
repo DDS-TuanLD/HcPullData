@@ -16,12 +16,29 @@ class groupingDeviceMappingRepo():
     def InsertManyWithCustomData(self, l: list):
         ins = self.__groupingDeviceMappingTable.insert()
         values = []
-        for i in range(len(l)):             
+        
+        for i in range(len(l)):  
+            groupingId = l[i].get('GroupingId', None)
+            if groupingId == None:
+                continue   
+            
+            groupingUnicastId = l[i].get('GroupUnicastId', None)
+            if groupingUnicastId == None:
+                continue
+            
+            deviceId = l[i].get('DeviceId', None)
+            if deviceId == None:
+                continue
+            
+            deviceUnicastId = l[i].get('DeviceUnicastId', None)
+            if deviceUnicastId == None:
+                continue
+            
             d = {
-                "GroupingId": l[i].get('GroupingId'),
-                "GroupUnicastId": l[i].get('GroupUnicastId'),
-                "DeviceId": l[i].get('DeviceId'),
-                "DeviceUnicastId":  l[i].get('DeviceUnicastId'),
+                "GroupingId": groupingId,
+                "GroupUnicastId": groupingUnicastId,
+                "DeviceId": deviceId,
+                "DeviceUnicastId":  deviceUnicastId,
             }
             values.append(d)
         if values == []:

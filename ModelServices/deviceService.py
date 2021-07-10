@@ -3,15 +3,8 @@ from Model.device import device
 from sqlalchemy import Table
 from sqlalchemy.engine.base import Connection
 from sqlalchemy.sql.expression import BinaryExpression
-
-class MetaDeviceServices(type):
-    _instances = {}
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(MetaDeviceServices, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
     
-class deviceServices(metaclass=MetaDeviceServices):
+class deviceServices():
     __deviceRepo: deviceRepo
     
     def __init__(self, deviceTable: Table, context: Connection):

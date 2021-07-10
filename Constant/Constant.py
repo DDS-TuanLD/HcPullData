@@ -12,7 +12,14 @@ SIGNALR_CLOUD_RESPONSE_ENTITY = "HC-DeviceAttributeValue"
 #pull,push data url
 CLOUD_PUSH_DATA_URL = "/rpc/iot-ebe/sync/hc/merge-device-attribute-value"
 
-
+#Mqtt connection option
+MQTT_PORT = 1883
+MQTT_QOS = 2
+MQTT_KEEPALIVE = 60
+MQTT_CONTROL_TOPIC = "HC.CONTROL"
+MQTT_RESPONSE_TOPIC = "HC.CONTROL.RESPONSE"
+MQTT_USER = "RD"
+MQTT_PASS = "1"
 
 #Server connection option
 TOKEN_URL = "/rpc/iot-ebe/account/renew-token"

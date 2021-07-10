@@ -112,7 +112,7 @@ class tableManager():
     
     @property
     def EventTriggerTable(self):
-        return self.__eventTriggerTable
+        return self.__eventTriggerTable.eventTriggerTable
     
     @property
     def GroupingDeviceMappingTable(self):

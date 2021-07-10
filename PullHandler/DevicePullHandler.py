@@ -17,7 +17,6 @@ class DevicePullHandler(Ipull):
             self._Ipull__logger.debug("have no data from cloud")
             print("have no data from cloud")
             return
-        print(data)
         self.__saveToDb(data)
         
     def __saveToDb(self, data: list):

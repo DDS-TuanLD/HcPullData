@@ -28,9 +28,13 @@ class groupingRepo():
             deletedAt = l[i].get('deletedAt')
             if deletedAt != None:
                 deletedAt = datetime.datetime.strptime(deletedAt, '%Y-%m-%dT%H:%M:%S.%fZ')
-                
+            
+            groupingId = l[i].get('id', None)
+            if groupingId == None:
+                continue
+            
             d = {
-                'GroupingId': l[i].get('id'),
+                'GroupingId': groupingId,
                 'GroupUnicastId': l[i].get('unicastId', None),
                 'Name': l[i].get('name', None),
                 'CategoryId': l[i].get('categoryId', None),

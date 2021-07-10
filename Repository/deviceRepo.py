@@ -37,15 +37,22 @@ class deviceRepo():
             updateDay: int
             updateTime: int
             updateAt = l[i].get('updatedAt', None)
+            
             if updateAt != None:
                 t = self.__timeSplit(time=datetime.datetime.strptime(updateAt, '%Y-%m-%dT%H:%M:%S.%fZ'))
                 updateDay = t[0]
-                updateTime = t[1]    
+                updateTime = t[1]   
+                 
             if updateAt == None:
                 updateDay = None
-                updateTime = None            
+                updateTime = None   
+                
+            deviceId =  l[i].get('id', None)    
+            if deviceId == None:
+                continue
+                    
             d = {
-                'DeviceId': l[i].get('id'),
+                'DeviceId': deviceId,
                 'DeviceUnicastId': l[i].get('unicastId', None),
                 'AppKey': l[i].get('appKey', None),
                 'NetKey': l[i].get('netKey', None),

@@ -5,7 +5,7 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 class deviceTable():
     def __init__(self, metadata: MetaData):
         self.deviceTable = Table('Device', metadata,
-                        Column('DeviceId', Integer, primary_key=True, nullable=False),
+                        Column('DeviceId', String, primary_key=True, nullable=False),
                         Column('DeviceUnicastId', Integer),
                         Column('AppKey', String),
                         Column('NetKey', String),

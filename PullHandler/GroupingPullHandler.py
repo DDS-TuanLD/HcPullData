@@ -21,13 +21,11 @@ class GroupingPullHandler(Ipull):
         
     def __saveToDb(self, data: list):
         db = Db()
-        #db.Services.GroupingServices.AddManyGroupingWithCustomData(data)
+        db.Services.GroupingServices.AddManyGroupingWithCustomData(data)
         device = []
         groupDeviceMappings = []
         for i in range(len(data)):
             gs = data[i].get("groupingDeviceMappings")
-            # print(gs)
-            # print(type(gs))
             for j in range(len(gs)):
                 d = gs[j].get('deviceId')
                 gDM = {
@@ -43,5 +41,15 @@ class GroupingPullHandler(Ipull):
         dt = rel.fetchall()
         for j in range(len(dt)):
             groupDeviceMappings[i]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
+            print("Device: " + dt[j]['DeviceUnicastId'])
+            print("groupMapping: " + groupDeviceMappings[i]['DeviceUnicastId'])
         db.Services.GroupingDeviceMappingServices.AddManyDeviceWithCustomData(groupDeviceMappings)
-            
+     
+    def Exhibit(self):
+        return super().Exhibit()
+    
+    def DeExhibit(self):
+        return super().DeExhibit()
+    
+    def ExhibitStatus(self):
+        return super().ExhibitStatus()       

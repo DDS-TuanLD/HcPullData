@@ -1483,3 +1483,47 @@
 2021-07-08 14:30:10,995:	ERROR:	Signalr.py:Init():132	Exception when connect with signalr server: can only concatenate str (not "NoneType") to str
 2021-07-09 08:37:51,178:	INFO:	Hc.py:__HcCheckConnectWithCloud():51	Hc send heardbeat to cloud
 2021-07-09 08:37:52,939:	INFO:	System.py:__pushDataToCloud():148	Push data successfully
+2021-07-10 09:52:53,017:	DEBUG:	DevicePullHandler.py:PullAndSave():17	have no data from cloud
+2021-07-10 09:52:53,020:	DEBUG:	GroupingPullHandler.py:PullAndSave():17	have no data from cloud
+2021-07-10 12:45:00,237:	DEBUG:	GroupingPullHandler.py:PullAndSave():17	have no data from cloud
+2021-07-10 12:47:14,869:	DEBUG:	GroupingPullHandler.py:PullAndSave():17	have no data from cloud
+2021-07-10 12:47:48,176:	DEBUG:	GroupingPullHandler.py:PullAndSave():17	have no data from cloud
+2021-07-10 12:52:59,860:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {
+  "CMD":"STOP"{"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+}
+2021-07-10 12:52:59,862:	ERROR:	MqttDataHandler.py:__handlerTopicHcControl():50	mqtt data receiver in topic HC.CONTROL invalid
+2021-07-10 12:53:24,202:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 12:55:56,419:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 12:56:18,726:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 12:57:28,731:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 12:57:52,020:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 13:00:21,528:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 13:03:23,438:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 13:04:29,584:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 13:07:21,460:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 13:09:17,335:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-10 13:11:51,911:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
