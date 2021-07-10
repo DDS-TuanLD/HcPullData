@@ -45,13 +45,15 @@ class RdHc():
         if dt != None:
             self.__cache.EndUserId = dt["EndUserProfileId"]
             self.__cache.RefreshToken = dt["RefreshToken"]  
-      
+     
+    
     async def Run(self):
-        self.__HcLoadUserData()
-        await self.__devicePullHandler.PullAndSave()
-        task2 = asyncio.ensure_future(self.__groupingPullHandler.PullAndSave())
-        tasks = [task2]
-        await asyncio.gather(*tasks)
+        await asyncio.sleep(1)
+        # self.__HcLoadUserData()
+        # await self.__devicePullHandler.PullAndSave()
+        # task2 = asyncio.ensure_future(self.__groupingPullHandler.PullAndSave())
+        # tasks = [task2]
+        # await asyncio.gather(*tasks)
         return
 
         

@@ -5,7 +5,7 @@ import datetime
 
 class groupingTable():
     def __init__(self, metadata: MetaData):
-        self.groupingTable = Table('Grouping', metadata,
+        self.groupingTable = Table('GROUPING', metadata,
                         Column('GroupingId', String, primary_key=True, nullable=False),
                         Column('GroupingUnicastId', Integer),
                         Column('Name', String),
