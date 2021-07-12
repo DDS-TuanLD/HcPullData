@@ -86,12 +86,12 @@ class RulePullHandler(Ipull):
     
     async def PullAndSave(self):
         await asyncio.sleep(1)
-        s = System(self._Ipull__logger)
-        data =await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_RULE_URL, {})
-        if data == None:
-            self._Ipull__logger.debug("have no data from cloud")
-            print("have no data from cloud")
-            return
+        # s = System(self._Ipull__logger)
+        # data =await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_RULE_URL, {})
+        # if data == None:
+        #     self._Ipull__logger.debug("have no data from cloud")
+        #     print("have no data from cloud")
+        #     return
         self.__saveToDb(data)
         
     def __saveToDb(self, l: list):
@@ -197,11 +197,11 @@ class RulePullHandler(Ipull):
                 eventTriggerOutputGroupingSetupValuesList.append(e) 
                 
             for s6 in range(len(eventTriggerOutputSceneMappingsList)):
-                c = eventTriggerOutputSceneMappingsList[s].get('outputSceneId')
+                c = eventTriggerOutputSceneMappingsList[s6].get('outputSceneId')
                 e = {
-                    "EventTriggerId": eventTriggerInputDeviceMappingsList[s].get('eventTriggerId'),
-                    "SceneId": eventTriggerInputDeviceMappingsList[s].get('outputSceneId'),
-                    "SceneUnicastId": None,
+                    "EventTriggerId": eventTriggerInputDeviceMappingsList[s6].get('eventTriggerId'),
+                    "SceneId": eventTriggerInputDeviceMappingsList[s6].get('outputSceneId'),
+                    "SceneUnicastID": None,
                 }
                 sceneForEventTriggerOutputSceneMappings.append(c)
                 eventTriggerOutputSceneMappings.append(e) 
@@ -245,7 +245,7 @@ class RulePullHandler(Ipull):
         rel7 = db.Services.EventTriggerServices.FindEventTriggerWithCondition(db.Table.EventTriggerTable.c.EventTriggerId.in_(sceneForEventTriggerOutputSceneMappings))
         dt7 = rel7.fetchall()
         for m7 in range(len(dt7)):
-              eventTriggerOutputGroupingMappings[m7]['SceneUnicastId'] = dt7[m7]['SceneUnicastId']
+              eventTriggerOutputGroupingMappings[m7]['SceneUnicastID'] = dt7[m7]['SceneUnicastID']
         db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomData(eventTriggerOutputSceneMappings)
                 
     def Exhibit(self):

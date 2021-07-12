@@ -70,7 +70,7 @@ class eventTriggerRepo():
             print(err)
             
     def FindWithCondition(self, condition: BinaryExpression):
-        ins = self.__deviceTable.select().where(condition)
+        ins = self.__eventTriggerTable.select().where(condition)
         rel = self.__context.execute(ins)
         return rel   
         

@@ -7,7 +7,7 @@ class eventTriggerOutputSceneMappingTable():
         self.eventTriggerOutputSceneMappingTable = Table('EventTriggerOutputSceneMapping', metadata,
                         Column('EventTriggerId', String, primary_key=True, nullable=True),
                         Column('SceneId', String, primary_key=True, nullable=True),
-                        Column('SceneUnicastId', Integer),
+                        Column('SceneUnicastID', Integer),
                         Column('typerun', Integer,  primary_key=True, nullable=True),
                         Column('Time', String),
                         ) 

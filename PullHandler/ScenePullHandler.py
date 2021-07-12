@@ -12,7 +12,6 @@ class ScenePullHandler(Ipull):
         super().__init__(log, http)
     
     async def PullAndSave(self):
-        await asyncio.sleep(1)
         s = System(self._Ipull__logger)
         data =await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_SCENE_URL, {})
         if data == None:

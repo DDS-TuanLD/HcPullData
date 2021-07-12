@@ -21,7 +21,7 @@ class eventTriggerOutputSceneMappingRepo():
             d = {
                 "EventTriggerId": l[i].get("id", None),
                 "SceneId": l[i].get("id", None),
-                "SceneUnicastId": l[i].get("unicastId", None),
+                "SceneUnicastID": l[i].get("unicastId", None),
                 "typerun": l[i].get("typerun", None),
                 "Time": l[i].get("time", None)
             }
