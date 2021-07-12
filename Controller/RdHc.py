@@ -20,7 +20,7 @@ from PullHandler.ScenePullHandler import ScenePullHandler
 from Handler.MqttDataHandler import MqttDataHandler
 from HcServices.Mqtt import Mqtt
 from Constract.Itransport import Itransport
-from HcServices.LedManager import LedManager
+from HcServices.Led import Led
 from Helper.System import System
 
 class RdHc():
@@ -30,7 +30,7 @@ class RdHc():
     __lock: threading.Lock
     __logger: logging.Logger
     __mqttServices: Itransport
-    __ledService: LedManager
+    __ledService: Led
     __mqttHandler: MqttDataHandler
     
     __devicePullHandler: Ipull
@@ -45,7 +45,7 @@ class RdHc():
         self.__cache = Cache()
         self.__lock = threading.Lock()
         self.__mqttServices = Mqtt(self.__logger)
-        self.__ledService = LedManager()
+        self.__ledService = Led()
         self.__mqttHandler =  MqttDataHandler(self.__logger, self.__mqttServices)
         self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
         self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
@@ -76,7 +76,7 @@ class RdHc():
         self.__scenePullHandler.DeExhibit()
     
     async def __HcGroupingPullHandler(self):
-        while self.__groupingPullHandler.ExhibitStatus() != False:
+        while self.__groupingPullHandler.IsInExhibitState() != False:
             await asyncio.sleep(1)  
         await self.__groupingPullHandler.PullAndSave()
         
@@ -86,14 +86,14 @@ class RdHc():
         await self.__rulePullHandler.PullAndSave()
         
     async def __HcScenePullHandler(self):
-        while self.__groupingPullHandler.ExhibitStatus() != False:
+        while self.__groupingPullHandler.IsInExhibitState() != False:
             await asyncio.sleep(1)  
         await self.__scenePullHandler.PullAndSave()
                     
     async def Run(self):
         
         s = System(self.__logger)   
-        s.StopOthersPythonProgramAndCronjob()
+        #s.StopOthersPythonProgramAndCronjob()
         
         await self.__mqttServices.Init()
         task1 = asyncio.ensure_future(self.__HcHandlerMqttData())     
@@ -105,7 +105,7 @@ class RdHc():
         await asyncio.gather(*tasks)
         
         self.__ledService.ServiceLedControl.Off()
-        s.StartCronjob()
+        #s.StartCronjob()
         return
 
         

@@ -13,3 +13,25 @@ class eventTriggerInputDeviceSetupValueRepo():
         self.__eventTriggerInputDeviceSetupValueTable = eventTriggerInputDeviceSetupValueTable
         self.__context = context
     
+    
+    def InsertManyWithCustomData(self, l: list):
+        ins = self.__eventTriggerInputDeviceSetupValueTable.insert()
+        values = []
+        for i in range(len(l)):
+            d = {
+                    "EventTriggerId": l[i].get("EventTriggerId"),
+                    "DeviceId": l[i].get("DeviceId"),
+                    "DeviceUnicastId": l[i].get("DeviceUnicastId"),
+                    "DeviceAttributeId": l[i].get("DeviceAttributeId"),
+                    "ComparisonOperatorId": l[i].get("ComparisonOperatorId"),
+                    "DeviceAttributeValue": l[i].get("DeviceAttributeValue"),
+                    "DeviceAttributeValueMAX": l[i].get("DeviceAttributeValueMAX")
+                }  
+            values.append(d)
+            
+        if values == []:
+            return
+        try:
+            self.__context.execute(ins, values)
+        except Exception as err:
+            print(err)

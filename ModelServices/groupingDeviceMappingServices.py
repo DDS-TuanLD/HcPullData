@@ -9,5 +9,5 @@ class groupingDeviceMappingServices():
     def __init__(self, groupingDeviceMappingTable: Table, context: Connection):
         self.__groupingDeviceMappingRepo = groupingDeviceMappingRepo(groupingDeviceMappingTable, context=context)
         
-    def AddManyDeviceWithCustomData(self, l: list):
+    def AddManyGroupingDeviceMappingWithCustomData(self, l: list):
         self.__groupingDeviceMappingRepo.InsertManyWithCustomData(l)

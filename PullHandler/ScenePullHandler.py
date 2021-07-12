@@ -23,8 +23,8 @@ class ScenePullHandler(Ipull):
         
     def __saveToDb(self, l: list):
         db = Db()
-        db.Services.EventTriggerServices.AddManyDeviceWithCustomData(l)
-        db.Services.EventTriggerOutputSceneMappingServices.AddManyDeviceWithCustomData(l)
+        db.Services.EventTriggerServices.AddManyEventTriggerWithCustomData(l, 1)
+        db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomData(l)
         sceneOutputDeviceMappings = []
         deviceForSceneOutputDeviceMapping = []
         
@@ -32,8 +32,8 @@ class ScenePullHandler(Ipull):
         deviceForSceneOutputDeviceSetupValue = []
         
         for i in range(len(l)):
-            sceneOutputDeviceMappingsReceivedList = l[i].get("sceneDeviceMappings")
-            sceneOutputDeviceSetupValueReceivedList = l[i].get("sceneDeviceSetupValues")
+            sceneOutputDeviceMappingsReceivedList = l[i].get("sceneDeviceMappings", [])
+            sceneOutputDeviceSetupValueReceivedList = l[i].get("sceneDeviceSetupValues", [])
             
             for j in range(len(sceneOutputDeviceMappingsReceivedList)):
                 d = sceneOutputDeviceMappingsReceivedList[j].get('deviceId')
@@ -63,13 +63,13 @@ class ScenePullHandler(Ipull):
         dt = rel.fetchall()
         for m in range(len(dt)):
             sceneOutputDeviceMappings[m]['DeviceUnicastId'] = dt[m]['DeviceUnicastId']
-        db.Services.EventTriggerOutputDeviceMappingServices.AddManyDeviceWithCustomData(sceneOutputDeviceMappings)
+        db.Services.EventTriggerOutputDeviceMappingServices.AddManyEventTriggerOutputDeviceMappingWithCustomData(sceneOutputDeviceMappings)
         
         rel2 = db.Services.DeviceServices.FindDeviceWithCondition(db.Table.DeviceTable.c.DeviceId.in_(deviceForSceneOutputDeviceSetupValue))
         dt2 = rel2.fetchall()
         for n in range(len(dt2)):
             sceneOutputDeviceSetupValue[n]['DeviceUnicastId'] = dt2[n]['DeviceUnicastId']
-        db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyDeviceWithCustomData(sceneOutputDeviceSetupValue)
+        db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyEventTriggerOutputDeviceSetupValueWithCustomData(sceneOutputDeviceSetupValue)
            
     def Exhibit(self):
         return super().Exhibit()
@@ -77,5 +77,5 @@ class ScenePullHandler(Ipull):
     def DeExhibit(self):
         return super().DeExhibit()
     
-    def ExhibitStatus(self):
-        return super().ExhibitStatus()       
+    def IsInExhibitState(self):
+        return super().IsInExhibitState()       

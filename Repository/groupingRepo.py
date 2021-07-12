@@ -49,3 +49,9 @@ class groupingRepo():
             self.__context.execute(ins, values)
         except Exception as err:
             print(err)
+            
+    def FindWithCondition(self, condition: BinaryExpression):
+        ins = self.__groupingTable.select().where(condition)
+        rel = self.__context.execute(ins)
+        return rel   
+    

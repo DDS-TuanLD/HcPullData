@@ -26,7 +26,7 @@ class GroupingPullHandler(Ipull):
         device = []
         groupDeviceMappings = []
         for i in range(len(data)):
-            gs = data[i].get("groupingDeviceMappings")
+            gs = data[i].get("groupingDeviceMappings", [])
             for j in range(len(gs)):
                 d = gs[j].get('deviceId')
                 gDM = {
@@ -41,7 +41,7 @@ class GroupingPullHandler(Ipull):
         dt = rel.fetchall()
         for j in range(len(dt)):
             groupDeviceMappings[j]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
-        db.Services.GroupingDeviceMappingServices.AddManyDeviceWithCustomData(groupDeviceMappings)
+        db.Services.GroupingDeviceMappingServices.AddManyGroupingDeviceMappingWithCustomData(groupDeviceMappings)
      
     def Exhibit(self):
         return super().Exhibit()
@@ -49,5 +49,5 @@ class GroupingPullHandler(Ipull):
     def DeExhibit(self):
         return super().DeExhibit()
     
-    def ExhibitStatus(self):
-        return super().ExhibitStatus()       
+    def IsInExhibitState(self):
+        return super().IsInExhibitState()       

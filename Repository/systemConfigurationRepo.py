@@ -47,14 +47,6 @@ class systemConfigurationRepo():
         return rel
             
     def FindWithCondition(self, condition: BinaryExpression):
-        """[summary]
-
-        Args:
-            condition (BinaryExpression): [description]
-
-        Returns:
-            [type]: [description]
-        """
         ins = self.__systemConfigurationTable.select().where(condition)
         rel = self.__context.execute(ins)
         return rel

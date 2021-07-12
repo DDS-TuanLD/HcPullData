@@ -9,3 +9,5 @@ class eventTriggerOutputGroupingSetupValueServices():
     def __init__(self, eventTriggerOutputGroupingSetupValueTable: Table, context: Connection):
         self.__eventTriggerOutputGroupingSetupValueRepo = eventTriggerOutputGroupingSetupValueRepo(eventTriggerOutputGroupingSetupValueTable, context=context)
         
+    def AddManyEventTriggerOutputGroupSetupValueWithCustomData(self, l:list):
+        self.__eventTriggerOutputGroupingSetupValueRepo.InsertManyWithCustomData(l)

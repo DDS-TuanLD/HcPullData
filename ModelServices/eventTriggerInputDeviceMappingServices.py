@@ -9,3 +9,5 @@ class eventTriggerInputDeviceMappingServices():
     def __init__(self, eventTriggerInputDeviceMappingTable: Table, context: Connection):
         self.__eventTriggerInputDeviceMappingRepo = eventTriggerInputDeviceMappingRepo(eventTriggerInputDeviceMappingTable, context=context)
         
+    def AddManyEventTriggerInputDeviceMappingWithCustomData(self, l : list):
+        self.__eventTriggerInputDeviceMappingRepo.InsertManyWithCustomData(l)

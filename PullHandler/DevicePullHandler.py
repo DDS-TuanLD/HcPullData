@@ -30,5 +30,5 @@ class DevicePullHandler(Ipull):
     def DeExhibit(self):
         return super().DeExhibit()
     
-    def ExhibitStatus(self):
-        return super().ExhibitStatus()       
+    def IsInExhibitState(self):
+        return super().IsInExhibitState()       

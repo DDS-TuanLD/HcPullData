@@ -11,6 +11,6 @@ class eventTriggerOutputGroupingSetupValueTable():
                         Column('DeviceAttributeId', Integer, primary_key=True, nullable=True),
                         Column('DeviceAttributeValue', Integer),
                         Column('typerun', Integer,  primary_key=True, nullable=True),
-                        Column('Time', Time),
+                        Column('Time', String),
 
                         ) 

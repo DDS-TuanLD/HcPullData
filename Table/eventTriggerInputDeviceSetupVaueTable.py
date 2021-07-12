@@ -9,7 +9,7 @@ class eventTriggerInputDeviceSetupValueTable():
                         Column('DeviceId', String, primary_key=True, nullable=True),
                         Column('DeviceUnicastId', Integer),
                         Column('DeviceAttributeId', Integer,  primary_key=True, nullable=True),
-                        Column('CromparisonOperatorId', Integer),
+                        Column('ComparisonOperatorId', Integer),
                         Column('DeviceAttributeValue', Integer),
                         Column('DeviceAttributeValueMAX', Integer),
                         ) 

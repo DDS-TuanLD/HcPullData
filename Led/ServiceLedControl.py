@@ -3,7 +3,7 @@ from Constract.Iled import Iled
 import time
 import Constant.Constant as const
 
-class ServiceLed():
+class serviceLedControl():
     __terminal: Terminal
     
     def __init__(self):

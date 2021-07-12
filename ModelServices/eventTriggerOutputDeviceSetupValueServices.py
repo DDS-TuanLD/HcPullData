@@ -9,5 +9,5 @@ class eventTriggerOutputDeviceSetupValueServices():
     def __init__(self, eventTriggerOutputDeviceSetupValueTable: Table, context: Connection):
         self.__eventTriggerOutputDeviceSetupValueRepo = eventTriggerOutputDeviceSetupValueRepo(eventTriggerOutputDeviceSetupValueTable, context=context)
         
-    def AddManyDeviceWithCustomData(self, l: list):
+    def AddManyEventTriggerOutputDeviceSetupValueWithCustomData(self, l: list):
         self.__eventTriggerOutputDeviceSetupValueRepo.InsertManyWithCustomData(l)

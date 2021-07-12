@@ -14,3 +14,20 @@ class eventTriggerInputDeviceMappingRepo():
         self.__eventTriggerInputDeviceMappingTable = EventTriggerInputDeviceMappingTable
         self.__context = context
     
+    def InsertManyWithCustomData(self, l: list):
+        ins = self.__eventTriggerInputDeviceMappingTable.insert()
+        values = []
+        for i in range(len(l)):
+            d = {
+                    "EventTriggerId": l[i].get("EventTriggerId"),
+                    "DeviceId": l[i].get("DeviceId"),
+                    "DeviceUnicastId": l[i].get("DeviceUnicastId"),
+                }  
+            values.append(d)
+            
+        if values == []:
+            return
+        try:
+            self.__context.execute(ins, values)
+        except Exception as err:
+            print(err)

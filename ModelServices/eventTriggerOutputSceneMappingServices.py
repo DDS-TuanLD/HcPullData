@@ -9,5 +9,5 @@ class eventTriggerOutputSceneMappingServices():
     def __init__(self, eventTriggerOutputSceneMappingTable: Table, context: Connection):
         self.__eventTriggerOutputSceneMappingRepo = eventTriggerOutputSceneMappingRepo(eventTriggerOutputSceneMappingTable, context=context)
         
-    def AddManyDeviceWithCustomData(self, l: list):
+    def AddManyEventTriggerOutputSceneMappingWithCustomData(self, l: list):
         self.__eventTriggerOutputSceneMappingRepo.InsertManyWithCustomData(l)

@@ -13,7 +13,7 @@ class eventTriggerRepo():
         self.__eventTriggerTable = eventTriggerTable
         self.__context = context
         
-    def InsertManyWithCustomData(self, l: list):
+    def InsertManyWithCustomData(self, l: list, type: int):
         ins = self.__eventTriggerTable.insert()
         values = []
         
@@ -40,17 +40,17 @@ class eventTriggerRepo():
             d = {
                 "EventTriggerId": eventTriggerId,
                 "GroupId": eventTriggerId,
-                "EventTriggerTypeId": l[i].get('eventTriggerTypeId', None),
+                "EventTriggerTypeId": l[i].get('eventTriggerTypeId', type),
                 "SceneUnicastID": l[i].get('unicastId', None),
                 "Priority": l[i].get('priority', None),
                 "Name": l[i].get('name', None),
                 "LogicalOperatorID": l[i].get('logicalOperatorId', None),
-                "HasTimer": l[i].get('userTimer', None),
+                "HasTimer": l[i].get('hasTimer', None),
                 "StartAt": startAt,
                 "EndAt": endAt,
                 "ValueCreate": l[i].get('valueCreate', None),
                 "StatusID": l[i].get('statusID', None),
-                "HasRepeater": l[i].get('useRepeater', None),
+                "HasRepeater": l[i].get('hasRepeater', None),
                 "EachMonday": l[i].get('eachMonday', None),
                 "EachTuesday": l[i].get('eachTuesday', None),
                 "EachWednesday": l[i].get('eachWednesday', None),
@@ -58,7 +58,7 @@ class eventTriggerRepo():
                 "EachFriday": l[i].get('eachFriday', None),
                 "EachSaturday": l[i].get('eachSaturday', None),
                 "EachSunday": l[i].get('eachSunday', None),
-                "NotificationUser": l[i].get('useNotification', None),
+                "NotificationUser": l[i].get('hasNotification', None),
                 "FADE_IN": fade_in,
             }
             values.append(d)
@@ -68,4 +68,9 @@ class eventTriggerRepo():
             self.__context.execute(ins, values)
         except Exception as err:
             print(err)
+            
+    def FindWithCondition(self, condition: BinaryExpression):
+        ins = self.__deviceTable.select().where(condition)
+        rel = self.__context.execute(ins)
+        return rel   
         

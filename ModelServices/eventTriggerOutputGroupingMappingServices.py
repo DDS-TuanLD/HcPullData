@@ -9,3 +9,5 @@ class eventTriggerOutputGroupingMappingServices():
     def __init__(self, eventTriggerOutputGroupingMappingTable: Table, context: Connection):
         self.__eventTriggerOutputGroupingMappingRepo = eventTriggerOutputGroupingMappingRepo(eventTriggerOutputGroupingMappingTable, context=context)
         
+    def AddManyEventTriggerOutputGroupMappingWithCustomData(self, l: list):
+        self.__eventTriggerOutputGroupingMappingRepo.InsertManyWithCustomData(l)

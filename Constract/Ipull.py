@@ -20,7 +20,7 @@ class Ipull(metaclass=ABCMeta):
     def DeExhibit(self):
         self.__exhibitFlag = False
     
-    def ExhibitStatus(self):
+    def IsInExhibitState(self):
         return self.__exhibitFlag 
         
     @abstractmethod

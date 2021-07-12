@@ -21,7 +21,7 @@ class eventTriggerOutputDeviceSetupValueRepo():
                     "EventTriggerId": l[i].get("EventTriggerId"),
                     "DeviceId": l[i].get("DeviceId"),
                     "DeviceUnicastId": l[i].get("DeviceUnicastId"),
-                    "DeviceAttribute": l[i].get("DeviceAttribute"),
+                    "DeviceAttributeId": l[i].get("DeviceAttributeId"),
                     "DeviceAttributeValue": l[i].get("DeviceAttributeValue"),
                     "typerun": l[i].get('typerun'),
                     "Time": l[i].get('Time')
