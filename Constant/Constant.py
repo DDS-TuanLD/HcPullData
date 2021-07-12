@@ -30,4 +30,6 @@ TOKEN_URL = "/rpc/iot-ebe/account/renew-token"
 #Sqlite connection option
 DB_NAME = "rd.Sqlite"
 
-#
+#Led
+LED_SERVICE_PIN_ON = '/bin/echo "1" > /sys/class/leds/linkit-smart-7688:orange:service/brightness'
+LED_SERVICE_PIN_OFF = '/bin/echo "0" > /sys/class/leds/linkit-smart-7688:orange:service/brightness'

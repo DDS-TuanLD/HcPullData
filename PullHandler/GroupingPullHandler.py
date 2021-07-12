@@ -31,17 +31,16 @@ class GroupingPullHandler(Ipull):
                 d = gs[j].get('deviceId')
                 gDM = {
                     "GroupingId": gs[j].get('groupingId'),
-                    "GroupUnicastId": data[i].get('unicastId'),
+                    "GroupUnicastId": data[j].get('unicastId'),
                     "DeviceId": gs[j].get('deviceId'),
                     "DeviceUnicastId": None
                 }
                 device.append(d)
                 groupDeviceMappings.append(gDM)
-        
         rel = db.Services.DeviceServices.FindDeviceWithCondition(db.Table.DeviceTable.c.DeviceId.in_(device))
         dt = rel.fetchall()
         for j in range(len(dt)):
-            groupDeviceMappings[i]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
+            groupDeviceMappings[j]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
         db.Services.GroupingDeviceMappingServices.AddManyDeviceWithCustomData(groupDeviceMappings)
      
     def Exhibit(self):

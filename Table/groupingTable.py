@@ -8,7 +8,7 @@ class groupingTable():
         self.groupingTable = Table('GROUPING', metadata,
                         Column('GroupingId', String, primary_key=True, nullable=False),
                         Column('GroupingUnicastId', Integer),
-                        Column('Name', String),
+                        Column('Name', String(1000)),
                         Column('CategoryId', Integer),
                         Column('CreatedAt', DateTime),
                         Column('UpdatedAt', DateTime),

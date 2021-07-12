@@ -42,7 +42,6 @@ class groupingRepo():
                 'UpdatedAt': updatedAt,
                 'DeletedAt': deletedAt
             }
-            print(d)
             values.append(d)
         if values == []:
             return

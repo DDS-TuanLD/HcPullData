@@ -7,6 +7,6 @@ class eventTriggerOutputGroupingMappingTable():
         self.eventTriggerOutputGroupingMappingTable = Table('EventTriggerOutputGroupingMapping', metadata,
                         Column('EventTriggerId', Integer, primary_key=True, nullable=True),
                         Column('GroupingId', String, primary_key=True, nullable=True),
-                        Column('GroupingUnicastId', Integer),
+                        Column('GroupUnicastId', Integer),
                         Column('typerun', Integer,  primary_key=True, nullable=True),
                         ) 

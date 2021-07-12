@@ -59,7 +59,6 @@ class ScenePullHandler(Ipull):
                 }
                 deviceForSceneOutputDeviceSetupValue.append(d)
                 sceneOutputDeviceSetupValue.append(sDSV) 
-                
         rel = db.Services.DeviceServices.FindDeviceWithCondition(db.Table.DeviceTable.c.DeviceId.in_(deviceForSceneOutputDeviceMapping))
         dt = rel.fetchall()
         for m in range(len(dt)):

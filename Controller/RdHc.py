@@ -20,6 +20,8 @@ from PullHandler.ScenePullHandler import ScenePullHandler
 from Handler.MqttDataHandler import MqttDataHandler
 from HcServices.Mqtt import Mqtt
 from Constract.Itransport import Itransport
+from HcServices.LedManager import LedManager
+from Helper.System import System
 
 class RdHc():
     __httpServices: Http
@@ -28,6 +30,7 @@ class RdHc():
     __lock: threading.Lock
     __logger: logging.Logger
     __mqttServices: Itransport
+    __ledService: LedManager
     __mqttHandler: MqttDataHandler
     
     __devicePullHandler: Ipull
@@ -42,6 +45,7 @@ class RdHc():
         self.__cache = Cache()
         self.__lock = threading.Lock()
         self.__mqttServices = Mqtt(self.__logger)
+        self.__ledService = LedManager()
         self.__mqttHandler =  MqttDataHandler(self.__logger, self.__mqttServices)
         self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
         self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
@@ -64,7 +68,10 @@ class RdHc():
     async def __HcDevicePullHandler(self):
         while self.__cache.EndUserId == "" or self.__cache.RefreshToken == "":
             await asyncio.sleep(1)
+        
+        self.__ledService.ServiceLedControl.On()
         await self.__devicePullHandler.PullAndSave()
+    
         self.__groupingPullHandler.DeExhibit()
         self.__scenePullHandler.DeExhibit()
     
@@ -84,14 +91,21 @@ class RdHc():
         await self.__scenePullHandler.PullAndSave()
                     
     async def Run(self):
+        
+        s = System(self.__logger)   
+        s.StopOthersPythonProgramAndCronjob()
+        
         await self.__mqttServices.Init()
         task1 = asyncio.ensure_future(self.__HcHandlerMqttData())     
         task2 = asyncio.ensure_future(self.__HcDevicePullHandler())
         task3 = asyncio.ensure_future(self.__HcGroupingPullHandler())
         # task4 = asyncio.ensure_future(self.__HcRulePullHandler())
         task5 = asyncio.ensure_future(self.__HcScenePullHandler())
-        tasks = [task1, task5]
+        tasks = [task1, task2, task3, task5]
         await asyncio.gather(*tasks)
+        
+        self.__ledService.ServiceLedControl.Off()
+        s.StartCronjob()
         return
 
         

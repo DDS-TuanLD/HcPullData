@@ -7,5 +7,5 @@ class eventTriggerInputGroupingMappingTable():
         self.eventTriggerInputGroupingMappingTable = Table('EventTriggerInputGroupingMapping', metadata,
                         Column('EventTriggerId', Integer, primary_key=True, nullable=True),
                         Column('GroupingId', String,  primary_key=True, nullable=True),
-                        Column('GroupingUnicastId', Integer),
+                        Column('GroupUnicastId', Integer),
                         ) 

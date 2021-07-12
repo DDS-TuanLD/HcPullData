@@ -11,6 +11,7 @@ import Constant.Constant as const
 import http
 import json
 import logging
+from Helper.Terminal import Terminal
 
 class System():
     __db=Db()
@@ -20,6 +21,23 @@ class System():
     def __init__(self, logger: logging.Logger):
         self.__logger = logger
         
+    def StopOthersPythonProgramAndCronjob(self):
+        t = Terminal()
+        
+        s = t.ExecuteWithResult(f'ps | grep python3 RDhcPy/main.py')
+        dt = s[1].split(" ")
+        for i in range(len(dt)):
+            if dt[i] != "":
+                print(dt[i])
+                break
+        s = t.Execute(f'kill -9 {dt[i]}')
+        
+        s2 = t.Execute("/etc/init.d/cron stop")
+        
+    def StartCronjob(self):
+        t = Terminal()
+        t.Execute("/etc/init.d/cron start")
+    
     async def SendHttpRequestTotUrl(self, h: Http, url: str, body: dict):
         endUser = self.__cache.EndUserId
         token = await self.__getToken(h) 
