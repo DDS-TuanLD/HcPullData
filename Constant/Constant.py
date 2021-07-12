@@ -11,7 +11,10 @@ SIGNALR_CLOUD_RESPONSE_ENTITY = "HC-DeviceAttributeValue"
 
 #pull,push data url
 CLOUD_PUSH_DATA_URL = "/rpc/iot-ebe/sync/hc/merge-device-attribute-value"
-
+CLOUD_PULL_DEVICE_URL = "/rpc/iot-ebe/sync/list-device"
+CLOUD_PULL_GROUPING_URL = "/rpc/iot-ebe/sync/list-grouping"
+CLOUD_PULL_SCENE_URL = "/rpc/iot-ebe/sync/list-scene"
+CLOUD_PULL_RULE_URL = "/rpc/iot-ebe/sync/list-rule"
 #Mqtt connection option
 MQTT_PORT = 1883
 MQTT_QOS = 2

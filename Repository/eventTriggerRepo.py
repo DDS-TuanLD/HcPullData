@@ -22,6 +22,17 @@ class eventTriggerRepo():
             if eventTriggerId == None:
                 continue
             
+            startAt=""
+            s = l[i].get('startAt', None)
+            if(s != None):    
+                t = datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S.%fZ')
+                startAt = datetime.time(t.hour, t.minute).strftime("%H:%M")
+                
+            endAt=""
+            e = l[i].get('endAt', None)
+            if(e != None):    
+                t = datetime.datetime.strptime(e, '%Y-%m-%dT%H:%M:%S.%fZ')
+                endAt = datetime.time(t.hour, t.minute).strftime("%H:%M")
             fade_in = l[i].get('fadeIn', None)
             if fade_in == None:
                 fade_in = 0
@@ -35,8 +46,8 @@ class eventTriggerRepo():
                 "Name": l[i].get('name', None),
                 "LogicalOperatorID": l[i].get('logicalOperatorId', None),
                 "HasTimer": l[i].get('userTimer', None),
-                "StartAt": datetime.time(12, 13).isoformat(timespec='minutes'),
-                "EndAt": datetime.time(12, 13).isoformat(timespec='minutes'),
+                "StartAt": startAt,
+                "EndAt": endAt,
                 "ValueCreate": l[i].get('valueCreate', None),
                 "StatusID": l[i].get('statusID', None),
                 "HasRepeater": l[i].get('useRepeater', None),

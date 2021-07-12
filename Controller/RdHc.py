@@ -16,6 +16,7 @@ from Constract.Ipull import Ipull
 from PullHandler.DevicePullHandler import DevicePullHandler
 from PullHandler.GroupingPullHandler import GroupingPullHandler
 from PullHandler.RulePullHandler import RulePullHandler
+from PullHandler.ScenePullHandler import ScenePullHandler
 from Handler.MqttDataHandler import MqttDataHandler
 from HcServices.Mqtt import Mqtt
 from Constract.Itransport import Itransport
@@ -28,9 +29,11 @@ class RdHc():
     __logger: logging.Logger
     __mqttServices: Itransport
     __mqttHandler: MqttDataHandler
+    
     __devicePullHandler: Ipull
     __groupingPullHandler: Ipull
     __rulePullHandler: Ipull
+    __scenePullHandler: Ipull
  
     def __init__(self, log: logging.Logger):
         self.__logger = log
@@ -43,6 +46,7 @@ class RdHc():
         self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
         self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
         self.__rulePullHandler = RulePullHandler(self.__logger, self.__httpServices)
+        self.__scenePullHandler = ScenePullHandler(self.__logger, self.__httpServices)
      
     async def __HcHandlerMqttData(self):
         """ This function handler data received in queue
@@ -62,6 +66,7 @@ class RdHc():
             await asyncio.sleep(1)
         await self.__devicePullHandler.PullAndSave()
         self.__groupingPullHandler.DeExhibit()
+        self.__scenePullHandler.DeExhibit()
     
     async def __HcGroupingPullHandler(self):
         while self.__groupingPullHandler.ExhibitStatus() != False:
@@ -69,18 +74,23 @@ class RdHc():
         await self.__groupingPullHandler.PullAndSave()
         
     async def __HcRulePullHandler(self):
-        # while self.__cache.EndUserId == "" or self.__cache.RefreshToken == "":
-        #     await asyncio.sleep(1)
+        while self.__cache.EndUserId == "" or self.__cache.RefreshToken == "":
+            await asyncio.sleep(1)
         await self.__rulePullHandler.PullAndSave()
+        
+    async def __HcScenePullHandler(self):
+        while self.__groupingPullHandler.ExhibitStatus() != False:
+            await asyncio.sleep(1)  
+        await self.__scenePullHandler.PullAndSave()
                     
     async def Run(self):
-        #await self.__mqttServices.Init()
-        #task1 = asyncio.ensure_future(self.__HcHandlerMqttData())     
-        # task2 = asyncio.ensure_future(self.__HcDevicePullHandler())
-        # task3 = asyncio.ensure_future(self.__HcGroupingPullHandler())
-        task4 = asyncio.ensure_future(self.__HcRulePullHandler())
-
-        tasks = [task4]
+        await self.__mqttServices.Init()
+        task1 = asyncio.ensure_future(self.__HcHandlerMqttData())     
+        task2 = asyncio.ensure_future(self.__HcDevicePullHandler())
+        task3 = asyncio.ensure_future(self.__HcGroupingPullHandler())
+        # task4 = asyncio.ensure_future(self.__HcRulePullHandler())
+        task5 = asyncio.ensure_future(self.__HcScenePullHandler())
+        tasks = [task1, task5]
         await asyncio.gather(*tasks)
         return
 

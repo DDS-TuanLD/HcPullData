@@ -4,6 +4,7 @@ from HcServices.Http import Http
 from Helper.System import System
 import logging
 from Database.Db import Db
+import Constant.Constant as const
 
 class GroupingPullHandler(Ipull):
    
@@ -12,7 +13,7 @@ class GroupingPullHandler(Ipull):
     
     async def PullAndSave(self):
         s = System(self._Ipull__logger)
-        data =await s.SendHttpRequestTotUrl(self._Ipull__http, "https://iot-dev.truesight.asia/rpc/iot-ebe/sync/list-grouping", {})
+        data =await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_GROUPING_URL, {})
         if data == None:
             self._Ipull__logger.debug("have no data from cloud")
             print("have no data from cloud")
@@ -41,8 +42,6 @@ class GroupingPullHandler(Ipull):
         dt = rel.fetchall()
         for j in range(len(dt)):
             groupDeviceMappings[i]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
-            print("Device: " + dt[j]['DeviceUnicastId'])
-            print("groupMapping: " + groupDeviceMappings[i]['DeviceUnicastId'])
         db.Services.GroupingDeviceMappingServices.AddManyDeviceWithCustomData(groupDeviceMappings)
      
     def Exhibit(self):
