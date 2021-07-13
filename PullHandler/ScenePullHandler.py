@@ -23,7 +23,7 @@ class ScenePullHandler(Ipull):
     def __saveToDb(self, l: list):
         db = Db()
         db.Services.EventTriggerServices.AddManyEventTriggerWithCustomData(l, 1)
-        db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomData(l)
+        db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomDataType1(l)
         sceneOutputDeviceMappings = []
         deviceForSceneOutputDeviceMapping = []
         

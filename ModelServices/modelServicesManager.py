@@ -55,7 +55,7 @@ class  modelServicesManager():
         self.__eventTriggerIdService = eventTriggerIdServices(table.EventTriggerIdTable, context)
         self.__eventTriggerTypeService = eventTriggerTypeServices(table.EventTriggerTypeTable, context)
         self.__eventTriggerInputDeviceMappingService = eventTriggerInputDeviceMappingServices(table.EventTriggerInputDeviceMappingTable, context)
-        self.__eventTriggerInputDeviceSetupValueService = eventTriggerInputDeviceSetupValueServices(table.EventTriggerInputDeviceMappingTable, context)
+        self.__eventTriggerInputDeviceSetupValueService = eventTriggerInputDeviceSetupValueServices(table.EventTriggerInputDeviceSetupValueTable, context)
         self.__eventTriggerInputGroupingMappingService = eventTriggerInputGroupingMappingServices(table.EventTriggerInputGroupingMappingTable, context)
         self.__eventTriggerOutputDeviceMappingService = eventTriggerOutputDeviceMappingServices(table.EventTriggerOutputDeviceMappingTable, context)
         self.__eventTriggerOutputDeviceSetupValueService = eventTriggerOutputDeviceSetupValueServices(table.EventTriggerOutputDeviceSetupValueTable, context)

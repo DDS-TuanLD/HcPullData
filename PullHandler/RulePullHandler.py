@@ -187,20 +187,20 @@ class RulePullHandler(Ipull):
             for s5 in range(len(eventTriggerOutputGroupingSetupValuesList)):
                 g = eventTriggerOutputGroupingSetupValuesList[s5].get('outputGroupingId')
                 e = {
-                    "EventTriggerId": eventTriggerInputDeviceMappingsList[s5].get('eventTriggerId'),
-                    "GroupingId": eventTriggerInputDeviceMappingsList[s5].get('outputGroupingId'),
+                    "EventTriggerId": eventTriggerOutputGroupingSetupValuesList[s5].get('eventTriggerId'),
+                    "GroupingId": eventTriggerOutputGroupingSetupValuesList[s5].get('outputGroupingId'),
                     "GroupUnicastId": None,
                     "DeviceAttributeId": eventTriggerOutputGroupingSetupValuesList[s5].get('deviceAttributeId'),
                     "DeviceAttributeValue": eventTriggerOutputGroupingSetupValuesList[s5].get('deviceAttributeValue')
                 }
                 groupForEventTriggerOutputGroupingSetupValues.append(g)
-                eventTriggerOutputGroupingSetupValuesList.append(e) 
+                eventTriggerOutputGroupingSetupValues.append(e) 
                 
             for s6 in range(len(eventTriggerOutputSceneMappingsList)):
                 c = eventTriggerOutputSceneMappingsList[s6].get('outputSceneId')
                 e = {
-                    "EventTriggerId": eventTriggerInputDeviceMappingsList[s6].get('eventTriggerId'),
-                    "SceneId": eventTriggerInputDeviceMappingsList[s6].get('outputSceneId'),
+                    "EventTriggerId": eventTriggerOutputSceneMappingsList[s6].get('eventTriggerId'),
+                    "SceneId": eventTriggerOutputSceneMappingsList[s6].get('outputSceneId'),
                     "SceneUnicastID": None,
                 }
                 sceneForEventTriggerOutputSceneMappings.append(c)
@@ -228,7 +228,7 @@ class RulePullHandler(Ipull):
         dt4 = rel4.fetchall()
         for m4 in range(len(dt4)):
             eventTriggerOutputGroupingSetupValues[m4]['DeviceUnicastId'] = dt4[m4]['DeviceUnicastId']
-        db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyEventTriggerOutputDeviceSetupValueWithCustomData(eventTriggerOutputGroupingSetupValues)
+        db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyEventTriggerOutputDeviceSetupValueWithCustomData(eventTriggerOutputDeviceSetupValues)
         
         rel5 = db.Services.GroupingServices.FindGroupWithCondition(db.Table.GroupingTable.c.GroupingId.in_(groupForEventTriggerOutputGroupingMappings))
         dt5 = rel5.fetchall()
@@ -246,7 +246,7 @@ class RulePullHandler(Ipull):
         dt7 = rel7.fetchall()
         for m7 in range(len(dt7)):
               eventTriggerOutputGroupingMappings[m7]['SceneUnicastID'] = dt7[m7]['SceneUnicastID']
-        db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomData(eventTriggerOutputSceneMappings)
+        db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomDataType2(eventTriggerOutputSceneMappings)
                 
     def Exhibit(self):
         return super().Exhibit()
