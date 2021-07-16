@@ -94,22 +94,21 @@ class RdHc():
                     
     async def Run(self):
         
-        # s = System(self.__logger)   
-        # s.StopOthersPythonProgramAndCronjob()
+        s = System(self.__logger)   
+        s.StopOthersPythonProgramAndCronjob()
         
-        # await self.__mqttServices.Init()
-        # task1 = asyncio.ensure_future(self.__HcHandlerMqttData())     
-        # task2 = asyncio.ensure_future(self.__HcDevicePullHandler())
-        # task3 = asyncio.ensure_future(self.__HcGroupingPullHandler())
-        # task4 = asyncio.ensure_future(self.__HcRulePullHandler())
-        # task5 = asyncio.ensure_future(self.__HcScenePullHandler())
-        # tasks = [task1, task2, task3, task4, task5]
-        # await asyncio.gather(*tasks)
+        self.__mqttServices.Init()
+        task1 = asyncio.create_task(self.__HcHandlerMqttData())     
+        task2 = asyncio.create_task(self.__HcDevicePullHandler())
+        task3 = asyncio.create_task(self.__HcGroupingPullHandler())
+        task4 = asyncio.create_task(self.__HcRulePullHandler())
+        task5 = asyncio.create_task(self.__HcScenePullHandler())
+        tasks = [task1, task2, task3, task4, task5]
+        await asyncio.gather(*tasks)
         
-        # self.__ledService.ServiceLedControl.Off()
-        # s.StartCronjob()
+        self.__ledService.ServiceLedControl.Off()
+        s.StartCronjob()
         
-        await self.__rulePullHandler.PullAndSave()
         return
 
         

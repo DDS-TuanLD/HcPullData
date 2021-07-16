@@ -1,1 +1,23 @@
-2021-07-13 01:41:41,082:	DEBUG:	RulePullHandler.py:PullAndSave():92	have no data from cloud
+2021-07-15 13:42:47,816:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {
+  "CMD": "HC_CONNECT_TO_CLOUD",
+  "DATA": {
+    "END_USER_PROFILE_ID": 10159,
+    "REFRESH_TOKEN": "OGj2Lo8elXRxCiOit9i2lvBRDWZYNtOmlDYtpwi53ocAh1PxrA29aFhayRBdCRKGjCWD8QLV6hLDNIGdLaeF8Nlt0QVwac9PK9OEu2P3cwcnRNP6MTnjPGvepFRgyiCfZYI4oTuGJefaWLU1HWMg1Qy5jPvhkofkbH+DNn4CD1sUjtb1ZYPa6nvYzkDC5qK4XcqR5EyndHQImB1VUlsP1uwPh2LS0GdSsVSllugPCPY="
+  }
+}
+2021-07-15 13:43:27,927:	DEBUG:	DevicePullHandler.py:PullAndSave():18	have no data from cloud
+2021-07-15 13:44:07,971:	DEBUG:	ScenePullHandler.py:PullAndSave():18	have no data from cloud
+2021-07-15 13:44:07,978:	DEBUG:	GroupingPullHandler.py:PullAndSave():18	have no data from cloud
+2021-07-15 13:44:16,156:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-15 13:45:38,689:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {"CMD":"HC_CONNECT_TO_CLOUD",
+"DATA":{"END_USER_PROFILE_ID":10150,"REFRESH_TOKEN":"OGj2Lo8elXRxCiOit9i2ltoMK2SEGJ7FXq7tlFsZ++gbFYMH0diPrHTDnULBbR1KsFTrXir+53nivFMtgFO7sKnF0+HRlEoTKkpXE72M9++Vvl4FpIEr3BZ2QQ7541O79ApCvSbzoiywK8E7pqYauIuX+nGOANkUcSg5rwkY7a2QLaaglVCWf/FFtzlpfJlCsxmF/rrdseeM7gi/RhMzpBC/Zr2SMx4ZZ19PNAHvzxM="}
+}
+2021-07-15 13:45:55,553:	DEBUG:	MqttDataHandler.py:__handlerTopicHcControl():35	data from topic HC.CONTROL: {
+  "CMD": "HC_CONNECT_TO_CLOUD",
+  "DATA": {
+    "END_USER_PROFILE_ID": 10159,
+    "REFRESH_TOKEN": "OGj2Lo8elXRxCiOit9i2lvBRDWZYNtOmlDYtpwi53ocAh1PxrA29aFhayRBdCRKGjCWD8QLV6hLDNIGdLaeF8Nlt0QVwac9PK9OEu2P3cwcnRNP6MTnjPGvepFRgyiCfZYI4oTuGJefaWLU1HWMg1Qy5jPvhkofkbH+DNn4CD1sUjtb1ZYPa6nvYzkDC5qK4XcqR5EyndHQImB1VUlsP1uwPh2LS0GdSsVSllugPCPY="
+  }
+}

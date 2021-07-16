@@ -60,7 +60,7 @@ class Mqtt(Itransport):
     def __on_connect(self, client, userdata, flags, rc):
             self.__client.subscribe(topic=const.MQTT_CONTROL_TOPIC, qos=self.__mqttConfig.qos)
 
-    async def _connect(self):
+    def _connect(self):
         """  Connect to mqtt broker
 
         Returns:
@@ -69,10 +69,9 @@ class Mqtt(Itransport):
       
         self.__client.on_message = self.__on_message
         self.__client.on_connect = self.__on_connect
-        #self.__client.username_pw_set(username=self.__mqttConfig.username, password=self.__mqttConfig.password)
+        self.__client.username_pw_set(username=self.__mqttConfig.username, password=self.__mqttConfig.password)
         try:
-            self.__client.connect_async(self.__mqttConfig.host, self.__mqttConfig.port)
-            self.__client.reconnect()
+            self.__client.connect(self.__mqttConfig.host, self.__mqttConfig.port)
             self.__client.loop_start()
         except Exception as err:
             self.__logger.error(f"Exception in connect to mqtt: {err}")
@@ -80,20 +79,13 @@ class Mqtt(Itransport):
 
     def Send(
         self, topic:str, send_data:str, qos: int):
-        """ Public data to mqtt server
-
-        Args:
-            send_data ([type]): [description]
-            qos (int, optional): [description]. Defaults to 0.
-        """
-        
         self.__client.publish(topic, payload=send_data, qos=qos)
              
     def DisConnect(self):
         self.__client.disconnect()
 
-    async def Init(self):
-        await self._connect()
+    def Init(self):
+        self._connect()
 
     def ReConnect(self):
         pass
