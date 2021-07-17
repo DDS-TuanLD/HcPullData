@@ -19,7 +19,7 @@ from PullHandler.RulePullHandler import RulePullHandler
 from PullHandler.ScenePullHandler import ScenePullHandler
 from Handler.MqttDataHandler import MqttDataHandler
 from HcServices.Mqtt import Mqtt
-from Constract.Itransport import Itransport
+from Constract.ITransport import ITransport
 from HcServices.Led import Led
 from Helper.System import System
 
@@ -29,7 +29,7 @@ class RdHc():
     __globalVariables: GlobalVariables
     __lock: threading.Lock
     __logger: logging.Logger
-    __mqttServices: Itransport
+    __mqttServices: ITransport
     __ledService: Led
     __mqttHandler: MqttDataHandler
     
@@ -69,7 +69,7 @@ class RdHc():
             if not self.__mqttServices.mqttDataQueue.empty():
                 with self.__lock:
                     item = self.__mqttServices.mqttDataQueue.get()
-                    self.__mqttHandler.Handler(item)
+                    self.__mqttHandler.handler(item)
                     self.__mqttServices.mqttDataQueue.task_done()
                 if self.__globalVariables.EndUserId != "" and self.__globalVariables.RefreshToken != "":
                     return
@@ -80,12 +80,12 @@ class RdHc():
             await asyncio.sleep(2)
             if self.__globalVariables.NumberOfPullApiSuccess == 4:
                 report_message = s.CreatePullStatusReportMessage(const.PULL_SUCCESS)
-                self.__mqttServices.Send(const.MQTT_RESPONSE_TOPIC, report_message, const.MQTT_QOS)
+                self.__mqttServices.send(const.MQTT_RESPONSE_TOPIC, report_message)
                 await asyncio.sleep(2)
                 exit()
             if self.__globalVariables.PullCloudErrorState != 0:
                 report_message = s.CreatePullStatusReportMessage(self.__globalVariables.PullCloudErrorState)
-                self.__mqttServices.Send(const.MQTT_RESPONSE_TOPIC, report_message, const.MQTT_QOS)
+                self.__mqttServices.send(const.MQTT_RESPONSE_TOPIC, report_message)
                 await asyncio.sleep(2)
                 exit()
 
@@ -119,8 +119,8 @@ class RdHc():
         
         s = System(self.__logger)
         #s.StopOthersPythonProgramAndCronjob()
-        self.__mqttServices.Init()
-        #self.__HcCheckInternetConnection()
+        self.__mqttServices.connect()
+        self.__HcCheckInternetConnection()
         task1 = asyncio.create_task(self.__HcHandlerMqttData())
         task2 = asyncio.create_task(self.__HcDevicePullHandler())
         task3 = asyncio.create_task(self.__HcGroupingPullHandler())
@@ -130,7 +130,7 @@ class RdHc():
         tasks = [task1, task2, task3, task4, task5, task6]
         await asyncio.gather(*tasks)
         
-        #self.__ledService.ServiceLedControl.Off()
+        self.__ledService.ServiceLedControl.Off()
         #s.StartCronjob()
         
         return

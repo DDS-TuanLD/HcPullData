@@ -1,8 +1,8 @@
-from Constract.Ihandler import Ihandler
+from Constract.IHandler import IHandler
 import asyncio
 import logging
 from HcServices.Mqtt import Mqtt
-from Constract.Itransport import Itransport
+from Constract.ITransport import ITransport
 from Cache.GlobalVariables import GlobalVariables
 import Constant.Constant as const
 import json
@@ -10,19 +10,19 @@ from Database.Db import Db
 from Model.systemConfiguration import systemConfiguration
 from Model.userData import userData
 
-class MqttDataHandler(Ihandler):
+class MqttDataHandler(IHandler):
     __logger: logging.Logger
-    __mqtt: Itransport
+    __mqtt: ITransport
     __db: Db
     __globalVariables : GlobalVariables
     
-    def __init__(self, log: logging.Logger, mqtt: Itransport):
+    def __init__(self, log: logging.Logger, mqtt: ITransport):
         self.__logger = log
         self.__mqtt = mqtt
         self.__db = Db()
         self.__globalVariables = GlobalVariables()
         
-    def Handler(self, item):
+    def handler(self, item):
         switcher = {
             const.MQTT_CONTROL_TOPIC: self.__handlerTopicHcControl
         }

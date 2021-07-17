@@ -6,7 +6,7 @@ from Cache.GlobalVariables import GlobalVariables
 import logging
 import threading
 import socket
-from Constract.Itransport import Itransport
+from Constract.ITransport import ITransport
 
 class MqttConfig():
     host: str
@@ -27,7 +27,7 @@ class MqttConfig():
         self.password = const.MQTT_PASS
 
 
-class Mqtt(Itransport):
+class Mqtt(ITransport):
     __mqttConfig: MqttConfig
     __client: mqtt.Client
     mqttDataQueue: queue.Queue
@@ -78,18 +78,18 @@ class Mqtt(Itransport):
             self.__logger.error(f"Exception in connect to mqtt: {err}")
             print(f"Exception in connect to mqtt: {err}")
 
-    def Send(self, topic:str, send_data:str, qos: int):
-        self.__client.publish(topic, payload=send_data, qos=qos)
+    def send(self, destination, send_data):
+        self.__client.publish(destination, payload=send_data, qos=const.MQTT_QOS)
              
-    def DisConnect(self):
+    def disconnect(self):
         self.__client.disconnect()
 
-    def Init(self):
+    def connect(self):
         self._connect()
 
-    def ReConnect(self):
+    def reconnect(self):
         pass
     
-    def Receive(self):
+    def receive(self):
         pass
 
