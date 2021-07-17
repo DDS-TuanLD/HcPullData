@@ -2,7 +2,7 @@ from HcServices.Http import Http
 import asyncio
 from Database.Db import Db
 import aiohttp
-from Cache.Cache import Cache
+from Cache.GlobalVariables import GlobalVariables
 import Constant.Constant as const
 import datetime
 from Model.systemConfiguration import systemConfiguration
@@ -26,7 +26,7 @@ from Helper.System import System
 class RdHc():
     __httpServices: Http
     __db: Db
-    __cache : Cache
+    __globalVariables: GlobalVariables
     __lock: threading.Lock
     __logger: logging.Logger
     __mqttServices: Itransport
@@ -42,31 +42,55 @@ class RdHc():
         self.__logger = log
         self.__httpServices = Http()
         self.__db = Db()
-        self.__cache = Cache()
+        self.__globalVariables = GlobalVariables()
         self.__lock = threading.Lock()
         self.__mqttServices = Mqtt(self.__logger)
         self.__ledService = Led()
-        self.__mqttHandler =  MqttDataHandler(self.__logger, self.__mqttServices)
+        self.__mqttHandler = MqttDataHandler(self.__logger, self.__mqttServices)
         self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
         self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
         self.__rulePullHandler = RulePullHandler(self.__logger, self.__httpServices)
         self.__scenePullHandler = ScenePullHandler(self.__logger, self.__httpServices)
-     
+    
+    def __HcCheckInternetConnection(self):
+        s = System(self.__logger)
+        if not s.PingGoogle():
+            report_message = s.CreatePullStatusReportMessage(const.NO_NETWORK_CONNECTION)
+            self.__mqttServices.Send(const.MQTT_RESPONSE_TOPIC, report_message, const.MQTT_QOS)
+            time.sleep(2)
+            exit()
+        return
+    
     async def __HcHandlerMqttData(self):
         """ This function handler data received in queue
         """
         while True:
             await asyncio.sleep(0.1)
-            if self.__mqttServices.mqttDataQueue.empty() == False:
+            if not self.__mqttServices.mqttDataQueue.empty():
                 with self.__lock:
                     item = self.__mqttServices.mqttDataQueue.get()
                     self.__mqttHandler.Handler(item)
                     self.__mqttServices.mqttDataQueue.task_done()
-                if self.__cache.EndUserId != "" and self.__cache.RefreshToken != "":
+                if self.__globalVariables.EndUserId != "" and self.__globalVariables.RefreshToken != "":
                     return
-         
+
+    async def __HcReportPullCloudStatus(self):
+        s = System(self.__logger)
+        while True:
+            await asyncio.sleep(2)
+            if self.__globalVariables.NumberOfPullApiSuccess == 4:
+                report_message = s.CreatePullStatusReportMessage(const.PULL_SUCCESS)
+                self.__mqttServices.Send(const.MQTT_RESPONSE_TOPIC, report_message, const.MQTT_QOS)
+                await asyncio.sleep(2)
+                exit()
+            if self.__globalVariables.PullCloudErrorState != 0:
+                report_message = s.CreatePullStatusReportMessage(self.__globalVariables.PullCloudErrorState)
+                self.__mqttServices.Send(const.MQTT_RESPONSE_TOPIC, report_message, const.MQTT_QOS)
+                await asyncio.sleep(2)
+                exit()
+
     async def __HcDevicePullHandler(self):
-        while self.__cache.EndUserId == "" or self.__cache.RefreshToken == "":
+        while self.__globalVariables.EndUserId == "" or self.__globalVariables.RefreshToken == "":
             await asyncio.sleep(1)
         
         self.__ledService.ServiceLedControl.On()
@@ -90,24 +114,24 @@ class RdHc():
             await asyncio.sleep(1)  
         await self.__scenePullHandler.PullAndSave()
         self.__rulePullHandler.DeExhibit()
-        
-                    
+
     async def Run(self):
         
-        s = System(self.__logger)   
-        s.StopOthersPythonProgramAndCronjob()
-        
+        s = System(self.__logger)
+        #s.StopOthersPythonProgramAndCronjob()
         self.__mqttServices.Init()
-        task1 = asyncio.create_task(self.__HcHandlerMqttData())     
+        #self.__HcCheckInternetConnection()
+        task1 = asyncio.create_task(self.__HcHandlerMqttData())
         task2 = asyncio.create_task(self.__HcDevicePullHandler())
         task3 = asyncio.create_task(self.__HcGroupingPullHandler())
         task4 = asyncio.create_task(self.__HcRulePullHandler())
         task5 = asyncio.create_task(self.__HcScenePullHandler())
-        tasks = [task1, task2, task3, task4, task5]
+        task6 = asyncio.create_task(self.__HcReportPullCloudStatus())
+        tasks = [task1, task2, task3, task4, task5, task6]
         await asyncio.gather(*tasks)
         
-        self.__ledService.ServiceLedControl.Off()
-        s.StartCronjob()
+        #self.__ledService.ServiceLedControl.Off()
+        #s.StartCronjob()
         
         return
 

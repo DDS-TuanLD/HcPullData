@@ -33,3 +33,8 @@ DB_NAME = "rd.Sqlite"
 #Led
 LED_SERVICE_PIN_ON = '/bin/echo "1" > /sys/class/leds/linkit-smart-7688:orange:service/brightness'
 LED_SERVICE_PIN_OFF = '/bin/echo "0" > /sys/class/leds/linkit-smart-7688:orange:service/brightness'
+
+#pull data error status
+NO_NETWORK_CONNECTION = 1
+NO_SERVER_RESPONSE = 2
+PULL_SUCCESS = 3

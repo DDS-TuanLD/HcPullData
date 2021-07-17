@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+
 class Iled(metaclass=ABCMeta):
     @abstractmethod
     def On(self):

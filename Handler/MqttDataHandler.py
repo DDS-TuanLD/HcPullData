@@ -3,7 +3,7 @@ import asyncio
 import logging
 from HcServices.Mqtt import Mqtt
 from Constract.Itransport import Itransport
-from Cache.Cache import Cache
+from Cache.GlobalVariables import GlobalVariables
 import Constant.Constant as const
 import json
 from Database.Db import Db
@@ -14,13 +14,13 @@ class MqttDataHandler(Ihandler):
     __logger: logging.Logger
     __mqtt: Itransport
     __db: Db
-    __cache : Cache
+    __globalVariables : GlobalVariables
     
     def __init__(self, log: logging.Logger, mqtt: Itransport):
         self.__logger = log
         self.__mqtt = mqtt
         self.__db = Db()
-        self.__cache = Cache()
+        self.__globalVariables = GlobalVariables()
         
     def Handler(self, item):
         switcher = {
@@ -53,8 +53,8 @@ class MqttDataHandler(Ihandler):
         try:
             endUserProfileId = data["END_USER_PROFILE_ID"]
             refreshToken = data["REFRESH_TOKEN"]
-            self.__cache.EndUserId = str(endUserProfileId)
-            self.__cache.RefreshToken = refreshToken
+            self.__globalVariables.EndUserId = str(endUserProfileId)
+            self.__globalVariables.RefreshToken = refreshToken
             userDt = userData(refreshToken=refreshToken, endUserProfileId=str(endUserProfileId))
             rel = self.__db.Services.UserdataServices.FindUserDataById(id = 1)
             dt = rel.first()

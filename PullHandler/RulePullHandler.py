@@ -6,7 +6,7 @@ import logging
 from Database.Db import Db
 import Constant.Constant as const
 
-data = [
+test_data = [
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "name": "string",
@@ -86,14 +86,12 @@ class RulePullHandler(Ipull):
     
     async def PullAndSave(self):
         await asyncio.sleep(1)
-        # s = System(self._Ipull__logger)
-        # data =await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_RULE_URL, {})
-        # if data == None:
-        #     self._Ipull__logger.debug("have no data from cloud")
-        #     print("have no data from cloud")
-        #     return
-        self.__saveToDb(data)
-        
+        s = System(self._Ipull__logger)
+        data = await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_RULE_URL, {})
+        if data is not None:
+            self.__saveToDb(data)
+            self.PullSuccess()
+
     def __saveToDb(self, l: list):
         db = Db()
         db.Services.EventTriggerServices.AddManyEventTriggerWithCustomData(l, 2)
@@ -256,4 +254,7 @@ class RulePullHandler(Ipull):
         return super().DeExhibit()
     
     def IsInExhibitState(self):
-        return super().IsInExhibitState()       
+        return super().IsInExhibitState()
+
+    def PullSuccess(self):
+        return super().PullSuccess()

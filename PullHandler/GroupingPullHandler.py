@@ -13,13 +13,11 @@ class GroupingPullHandler(Ipull):
     
     async def PullAndSave(self):
         s = System(self._Ipull__logger)
-        data =await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_GROUPING_URL, {})
-        if data == None:
-            self._Ipull__logger.debug("have no data from cloud")
-            print("have no data from cloud")
-            return
-        self.__saveToDb(data)
-        
+        data = await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_GROUPING_URL, {})
+        if data is not None:
+            self.__saveToDb(data)
+            self.PullSuccess()
+
     def __saveToDb(self, data: list):
         db = Db()
         db.Services.GroupingServices.AddManyGroupingWithCustomData(data)
@@ -51,3 +49,6 @@ class GroupingPullHandler(Ipull):
     
     def IsInExhibitState(self):
         return super().IsInExhibitState()       
+
+    def PullSuccess(self):
+        return super().PullSuccess()

@@ -1,9 +1,10 @@
 from Helper.Terminal import Terminal
-from Constract.Iled import Iled
 import time
 import Constant.Constant as const
+from Constract.Iled import Iled
 
-class serviceLedControl():
+
+class serviceLedControl(Iled):
     __terminal: Terminal
     
     def __init__(self):

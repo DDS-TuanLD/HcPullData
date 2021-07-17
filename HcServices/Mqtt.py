@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import asyncio
 import queue
 import Constant.Constant as const
-from Cache.Cache import Cache
+from Cache.GlobalVariables import GlobalVariables
 import logging
 import threading
 import socket
@@ -12,7 +12,7 @@ class MqttConfig():
     host: str
     port: int
     qos: int
-    keepalive: int
+    keepAlive: int
     username: str
     password: str
     
@@ -22,15 +22,16 @@ class MqttConfig():
         self.host = ip
         self.port = const.MQTT_PORT
         self.qos = const.MQTT_QOS
-        self.keepalive = const.MQTT_KEEPALIVE
+        self.keepAlive = const.MQTT_KEEPALIVE
         self.username = const.MQTT_USER
         self.password = const.MQTT_PASS
-    
+
+
 class Mqtt(Itransport):
     __mqttConfig: MqttConfig
     __client: mqtt.Client
     mqttDataQueue: queue.Queue
-    __cache: Cache
+    __globalVariables: GlobalVariables
     __logger: logging.Logger
     __lock: threading.Lock
     
@@ -39,7 +40,7 @@ class Mqtt(Itransport):
         self.__mqttConfig = MqttConfig()
         self.__client = mqtt.Client()
         self.mqttDataQueue = queue.Queue()
-        self.__cache = Cache()
+        self.__globalVariables = GlobalVariables()
         self.__lock = threading.Lock()
     
     def __on_message(self, client, userdata, msg):
@@ -77,8 +78,7 @@ class Mqtt(Itransport):
             self.__logger.error(f"Exception in connect to mqtt: {err}")
             print(f"Exception in connect to mqtt: {err}")
 
-    def Send(
-        self, topic:str, send_data:str, qos: int):
+    def Send(self, topic:str, send_data:str, qos: int):
         self.__client.publish(topic, payload=send_data, qos=qos)
              
     def DisConnect(self):
@@ -92,4 +92,4 @@ class Mqtt(Itransport):
     
     def Receive(self):
         pass
-    
+
