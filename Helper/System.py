@@ -9,9 +9,40 @@ import json
 import logging
 from Helper.Terminal import Terminal
 
-class System():
-    __db=Db()
-    __globalVariables=GlobalVariables()
+
+def noServerResponseErrorMessageCreate():
+    data = {
+        "CMD": "HC_PULL_DATA_STATUS",
+        "DATA": {
+            "STATUS": "FAIL"
+        }
+    }
+    return json.dumps(data)
+
+
+def noNetWorkConnectionErrorMessageCreate():
+    data = {
+        "CMD": "HC_PULL_DATA_STATUS",
+        "DATA": {
+            "STATUS": "FAIL"
+        }
+    }
+    return json.dumps(data)
+
+
+def pullSuccessMessageCreate():
+    data = {
+        "CMD": "HC_PULL_DATA_STATUS",
+        "DATA": {
+            "STATUS": "SUCCESS"
+        }
+    }
+    return json.dumps(data)
+
+
+class System:
+    __db = Db()
+    __globalVariables = GlobalVariables()
     __logger = logging.Logger
     
     def __init__(self, logger: logging.Logger):
@@ -93,38 +124,10 @@ class System():
     
     def CreatePullStatusReportMessage(self, pullState: int):
         switcher = {
-            const.NO_SERVER_RESPONSE: self.__noServerResponseErrorMessageCreate,
-            const.NO_NETWORK_CONNECTION: self.__noNetWorkConnectionErrorMessageCreate,
-            const.PULL_SUCCESS: self.__pullSuccessMessageCreate
+            const.NO_SERVER_RESPONSE: noServerResponseErrorMessageCreate,
+            const.NO_NETWORK_CONNECTION: noNetWorkConnectionErrorMessageCreate,
+            const.PULL_SUCCESS: pullSuccessMessageCreate
         }
         func = switcher.get(pullState)
         report_message = func()
-        print(report_message)
         return report_message
-
-    def __noServerResponseErrorMessageCreate(self):
-        data = {
-            "CMD": "HC_PULL_DATA_STATUS",
-            "DATA": {
-                "STATUS": "FAIL"
-            }
-        }
-        return json.dumps(data)
-
-    def __noNetWorkConnectionErrorMessageCreate(self):
-        data = {
-            "CMD": "HC_PULL_DATA_STATUS",
-            "DATA": {
-                "STATUS": "FAIL"
-            }
-        }
-        return json.dumps(data)
-
-    def __pullSuccessMessageCreate(self):
-        data = {
-            "CMD": "HC_PULL_DATA_STATUS",
-            "DATA": {
-                "STATUS": "SUCCESS"
-            }
-        }
-        return json.dumps(data)

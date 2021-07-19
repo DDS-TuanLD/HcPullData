@@ -1,7 +1,7 @@
 from Led.ServiceLedControl import serviceLedControl
 
 
-class Led():
+class Led:
     __serviceLedControl: serviceLedControl
     
     def __init__(self):

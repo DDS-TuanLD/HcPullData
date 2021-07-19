@@ -1,4 +1,4 @@
-from Constract.Ipull import Ipull
+from Constract.IPull import IPull
 import asyncio
 from HcServices.Http import Http
 from Helper.System import System
@@ -6,14 +6,15 @@ import logging
 from Database.Db import Db
 import Constant.Constant as const
 
-class GroupingPullHandler(Ipull):
+
+class GroupingPullHandler(IPull):
    
     def __init__(self, log: logging.Logger, http: Http):
         super().__init__(log, http)
     
     async def PullAndSave(self):
-        s = System(self._Ipull__logger)
-        data = await s.SendHttpRequestTotUrl(self._Ipull__http, const.SERVER_HOST+const.CLOUD_PULL_GROUPING_URL, {})
+        s = System(self._IPull__logger)
+        data = await s.SendHttpRequestTotUrl(self._IPull__http, const.SERVER_HOST+const.CLOUD_PULL_GROUPING_URL, {})
         if data is not None:
             self.__saveToDb(data)
             self.PullSuccess()
@@ -40,15 +41,3 @@ class GroupingPullHandler(Ipull):
         for j in range(len(dt)):
             groupDeviceMappings[j]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
         db.Services.GroupingDeviceMappingServices.AddManyGroupingDeviceMappingWithCustomData(groupDeviceMappings)
-     
-    def Exhibit(self):
-        return super().Exhibit()
-    
-    def DeExhibit(self):
-        return super().DeExhibit()
-    
-    def IsInExhibitState(self):
-        return super().IsInExhibitState()       
-
-    def PullSuccess(self):
-        return super().PullSuccess()

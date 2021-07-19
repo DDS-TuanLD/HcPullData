@@ -1,76 +1,63 @@
 from HcServices.Http import Http
 import asyncio
-from Database.Db import Db
-import aiohttp
 from Cache.GlobalVariables import GlobalVariables
 import Constant.Constant as const
-import datetime
-from Model.systemConfiguration import systemConfiguration
 import time
-from Model.userData import userData
 import logging
 import threading
-import http
-import json
-from Constract.Ipull import Ipull
-from PullHandler.DevicePullHandler import DevicePullHandler
-from PullHandler.GroupingPullHandler import GroupingPullHandler
-from PullHandler.RulePullHandler import RulePullHandler
-from PullHandler.ScenePullHandler import ScenePullHandler
-from Handler.MqttDataHandler import MqttDataHandler
+from Constract.IPull import IPull
+from Constract.IHandler import IHandler
 from HcServices.Mqtt import Mqtt
 from Constract.ITransport import ITransport
 from HcServices.Led import Led
 from Helper.System import System
 
-class RdHc():
+
+class RdHc:
     __httpServices: Http
-    __db: Db
     __globalVariables: GlobalVariables
     __lock: threading.Lock
     __logger: logging.Logger
     __mqttServices: ITransport
     __ledService: Led
-    __mqttHandler: MqttDataHandler
+    __mqttHandler: IHandler
     
-    __devicePullHandler: Ipull
-    __groupingPullHandler: Ipull
-    __rulePullHandler: Ipull
-    __scenePullHandler: Ipull
+    __devicePullHandler: IPull
+    __groupingPullHandler: IPull
+    __rulePullHandler: IPull
+    __scenePullHandler: IPull
  
-    def __init__(self, log: logging.Logger):
+    def __init__(self, log: logging.Logger, http: Http, mqtt: Mqtt, led: Led, mqttDataHandler: IHandler,
+                 devicePullHandler: IPull, groupPullHandler: IPull, rulePullHandler: IPull, scenePullHandler: IPull):
         self.__logger = log
-        self.__httpServices = Http()
-        self.__db = Db()
+        self.__httpServices = http
         self.__globalVariables = GlobalVariables()
         self.__lock = threading.Lock()
-        self.__mqttServices = Mqtt(self.__logger)
-        self.__ledService = Led()
-        self.__mqttHandler = MqttDataHandler(self.__logger, self.__mqttServices)
-        self.__devicePullHandler = DevicePullHandler(self.__logger, self.__httpServices)
-        self.__groupingPullHandler = GroupingPullHandler(self.__logger, self.__httpServices)
-        self.__rulePullHandler = RulePullHandler(self.__logger, self.__httpServices)
-        self.__scenePullHandler = ScenePullHandler(self.__logger, self.__httpServices)
+        self.__mqttServices = mqtt
+        self.__ledService = led
+        self.__mqttHandler = mqttDataHandler
+        self.__devicePullHandler = devicePullHandler
+        self.__groupingPullHandler = groupPullHandler
+        self.__rulePullHandler = rulePullHandler
+        self.__scenePullHandler = scenePullHandler
     
     def __HcCheckInternetConnection(self):
         s = System(self.__logger)
         if not s.PingGoogle():
             report_message = s.CreatePullStatusReportMessage(const.NO_NETWORK_CONNECTION)
-            self.__mqttServices.Send(const.MQTT_RESPONSE_TOPIC, report_message, const.MQTT_QOS)
+            self.__mqttServices.send(const.MQTT_RESPONSE_TOPIC, report_message)
             time.sleep(2)
             exit()
         return
     
     async def __HcHandlerMqttData(self):
-        """ This function handler data received in queue
-        """
         while True:
             await asyncio.sleep(0.1)
-            if not self.__mqttServices.mqttDataQueue.empty():
+            if not self.__mqttServices.receive_data_queue.empty():
                 with self.__lock:
-                    item = self.__mqttServices.mqttDataQueue.get()
+                    item = self.__mqttServices.receive_data_queue.get()
                     self.__mqttHandler.handler(item)
-                    self.__mqttServices.mqttDataQueue.task_done()
+                    self.__mqttServices.receive_data_queue.task_done()
                 if self.__globalVariables.EndUserId != "" and self.__globalVariables.RefreshToken != "":
                     return
 
@@ -100,17 +87,17 @@ class RdHc():
         self.__scenePullHandler.DeExhibit()
     
     async def __HcGroupingPullHandler(self):
-        while self.__groupingPullHandler.IsInExhibitState() != False:
+        while self.__groupingPullHandler.IsInExhibitState():
             await asyncio.sleep(1)  
         await self.__groupingPullHandler.PullAndSave()
         
     async def __HcRulePullHandler(self):
-        while self.__rulePullHandler.IsInExhibitState() != False:
+        while self.__rulePullHandler.IsInExhibitState():
             await asyncio.sleep(1)
         await self.__rulePullHandler.PullAndSave()
         
     async def __HcScenePullHandler(self):
-        while self.__scenePullHandler.IsInExhibitState() != False:
+        while self.__scenePullHandler.IsInExhibitState():
             await asyncio.sleep(1)  
         await self.__scenePullHandler.PullAndSave()
         self.__rulePullHandler.DeExhibit()

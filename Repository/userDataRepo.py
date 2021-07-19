@@ -6,7 +6,8 @@ import asyncio
 import datetime
 from sqlalchemy.engine.base import Connection
 
-class userDataRepo():
+
+class userDataRepo:
     __userDataTable: Table
     __context: Connection
     
@@ -32,9 +33,10 @@ class userDataRepo():
         self.__context.execute(ins)
     
     def UpdateById(self, id:int, newUserData: userData):
-        ins = self.__userDataTable.update().where(self.__userDataTable.c.Id == id).values({"RefreshToken": newUserData.RefreshToken,
-                                                                                           "EndUserProfileId": newUserData.EndUserProfileId,
-                                                                                           "UpdateAt": datetime.datetime.now()})
+        ins = self.__userDataTable.update().where(self.__userDataTable.c.Id == id)\
+            .values({"RefreshToken": newUserData.RefreshToken,
+                     "EndUserProfileId": newUserData.EndUserProfileId,
+                     "UpdateAt": datetime.datetime.now()})
         self.__context.execute(ins)
     
     def FindwithId(self, Id:int):

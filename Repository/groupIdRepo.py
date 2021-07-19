@@ -5,7 +5,8 @@ import asyncio
 import datetime
 from sqlalchemy.engine.base import Connection
 
-class groupIdRepo():
+
+class groupIdRepo:
     __groupIdTable: Table
     __context: Connection
     

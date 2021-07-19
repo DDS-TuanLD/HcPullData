@@ -8,6 +8,7 @@ import threading
 import socket
 from Constract.ITransport import ITransport
 
+
 class MqttConfig():
     host: str
     port: int
@@ -15,8 +16,8 @@ class MqttConfig():
     keepAlive: int
     username: str
     password: str
-    
-    def __init__(self): 
+
+    def __init__(self):
         hostname = socket.gethostname()
         ip = socket.gethostbyname(hostname)
         self.host = ip
@@ -30,19 +31,18 @@ class MqttConfig():
 class Mqtt(ITransport):
     __mqttConfig: MqttConfig
     __client: mqtt.Client
-    mqttDataQueue: queue.Queue
     __globalVariables: GlobalVariables
     __logger: logging.Logger
     __lock: threading.Lock
-    
+
     def __init__(self, log: logging.Logger):
+        super().__init__()
         self.__logger = log
         self.__mqttConfig = MqttConfig()
         self.__client = mqtt.Client()
-        self.mqttDataQueue = queue.Queue()
         self.__globalVariables = GlobalVariables()
         self.__lock = threading.Lock()
-    
+
     def __on_message(self, client, userdata, msg):
         """[summary]
 
@@ -55,19 +55,13 @@ class Mqtt(ITransport):
         topic = msg.topic
         item = {"topic": topic, "msg": message}
         with self.__lock:
-            self.mqttDataQueue.put(item)
+            self.receive_data_queue.put(item)
         return
-    
+
     def __on_connect(self, client, userdata, flags, rc):
-            self.__client.subscribe(topic=const.MQTT_CONTROL_TOPIC, qos=self.__mqttConfig.qos)
+        self.__client.subscribe(topic=const.MQTT_CONTROL_TOPIC, qos=self.__mqttConfig.qos)
 
     def _connect(self):
-        """  Connect to mqtt broker
-
-        Returns:
-            [bool]: [connect status: false/true]
-        """
-      
         self.__client.on_message = self.__on_message
         self.__client.on_connect = self.__on_connect
         self.__client.username_pw_set(username=self.__mqttConfig.username, password=self.__mqttConfig.password)
@@ -80,7 +74,7 @@ class Mqtt(ITransport):
 
     def send(self, destination, send_data):
         self.__client.publish(destination, payload=send_data, qos=const.MQTT_QOS)
-             
+
     def disconnect(self):
         self.__client.disconnect()
 
@@ -89,7 +83,6 @@ class Mqtt(ITransport):
 
     def reconnect(self):
         pass
-    
+
     def receive(self):
         pass
-

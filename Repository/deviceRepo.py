@@ -6,14 +6,15 @@ import datetime
 from sqlalchemy.engine.base import Connection
 from Model.device import device
 
+
 class deviceRepo():
     __deviceTable: Table
     __context: Connection
-    
+
     def __init__(self, DeviceTable: Table, context: Connection):
         self.__deviceTable = DeviceTable
         self.__context = context
-        
+
     def CreateWithParams(self, d: device):
         ins = self.__deviceTable.insert()
         values = {
@@ -29,7 +30,7 @@ class deviceRepo():
             'Owner': d.Owner
         }
         self.__context.execute(ins, values)
-        
+
     def InsertManyWithCustomData(self, l: list):
         ins = self.__deviceTable.insert()
         values = []
@@ -37,20 +38,20 @@ class deviceRepo():
             updateDay: int
             updateTime: int
             updateAt = l[i].get('updatedAt', None)
-            
-            if updateAt != None:
+
+            if updateAt is not None:
                 t = self.__timeSplit(time=datetime.datetime.strptime(updateAt, '%Y-%m-%dT%H:%M:%S.%fZ'))
                 updateDay = t[0]
-                updateTime = t[1]   
-                 
-            if updateAt == None:
+                updateTime = t[1]
+
+            if updateAt is None:
                 updateDay = None
-                updateTime = None   
-                
-            deviceId =  l[i].get('id', None)    
-            if deviceId == None:
+                updateTime = None
+
+            deviceId = l[i].get('id', None)
+            if deviceId is None:
                 continue
-                    
+
             d = {
                 'DeviceId': deviceId,
                 'DeviceUnicastId': l[i].get('unicastId', None),
@@ -64,27 +65,27 @@ class deviceRepo():
                 'Owner': l[i].get('Owner', None)
             }
             values.append(d)
-        if values == []:
+        if not values:
             return
         try:
             self.__context.execute(ins, values)
         except Exception as err:
             print(err)
-            
+
     def FindWithCondition(self, condition: BinaryExpression):
         ins = self.__deviceTable.select().where(condition)
         rel = self.__context.execute(ins)
-        return rel   
-    
+        return rel
+
     def __timeSplit(self, time: datetime.datetime):
         m = str(time.month)
         if int(m) < 10:
-            m = "0"+ m
-            
+            m = "0" + m
+
         d = str(time.day)
         if int(d) < 10:
             d = "0" + d
-            
+
         updateDay = int(str(time.year) + m + d)
-        updateTime = 60*time.hour + time.minute
+        updateTime = 60 * time.hour + time.minute
         return updateDay, updateTime

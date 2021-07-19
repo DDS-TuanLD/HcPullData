@@ -5,38 +5,39 @@ import asyncio
 import datetime
 from sqlalchemy.engine.base import Connection
 
+
 class eventTriggerRepo():
     __eventTriggerTable: Table
     __context: Connection
-    
+
     def __init__(self, eventTriggerTable: Table, context: Connection):
         self.__eventTriggerTable = eventTriggerTable
         self.__context = context
-        
+
     def InsertManyWithCustomData(self, l: list, type: int):
         ins = self.__eventTriggerTable.insert()
         values = []
-        
-        for i in range(len(l)):  
+
+        for i in range(len(l)):
             eventTriggerId = l[i].get('id', None)
-            if eventTriggerId == None:
+            if eventTriggerId is None:
                 continue
-            
-            startAt=""
+
+            startAt = ""
             s = l[i].get('startAt', None)
-            if(s != None):    
+            if s is not None:
                 t = datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S.%fZ')
                 startAt = datetime.time(t.hour, t.minute).strftime("%H:%M")
-                
-            endAt=""
+
+            endAt = ""
             e = l[i].get('endAt', None)
-            if(e != None):    
+            if e is not None:
                 t = datetime.datetime.strptime(e, '%Y-%m-%dT%H:%M:%S.%fZ')
                 endAt = datetime.time(t.hour, t.minute).strftime("%H:%M")
             fade_in = l[i].get('fadeIn', None)
-            if fade_in == None:
+            if fade_in is None:
                 fade_in = 0
-                
+
             d = {
                 "EventTriggerId": eventTriggerId,
                 "GroupId": eventTriggerId,
@@ -62,15 +63,14 @@ class eventTriggerRepo():
                 "FADE_IN": fade_in,
             }
             values.append(d)
-        if values == []:
+        if not values:
             return
         try:
             self.__context.execute(ins, values)
         except Exception as err:
             print(err)
-            
+
     def FindWithCondition(self, condition: BinaryExpression):
         ins = self.__eventTriggerTable.select().where(condition)
         rel = self.__context.execute(ins)
-        return rel   
-        
+        return rel

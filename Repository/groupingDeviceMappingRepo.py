@@ -5,7 +5,8 @@ import asyncio
 import datetime
 from sqlalchemy.engine.base import Connection
 
-class groupingDeviceMappingRepo():
+
+class groupingDeviceMappingRepo:
     __groupingDeviceMappingTable: Table
     __context: Connection
     
@@ -19,19 +20,19 @@ class groupingDeviceMappingRepo():
         
         for i in range(len(l)):  
             groupingId = l[i].get('GroupingId', None)
-            if groupingId == None:
+            if groupingId is None:
                 continue   
             
             groupingUnicastId = l[i].get('GroupUnicastId', None)
-            if groupingUnicastId == None:
+            if groupingUnicastId is None:
                 continue
             
             deviceId = l[i].get('DeviceId', None)
-            if deviceId == None:
+            if deviceId is None:
                 continue
             
             deviceUnicastId = l[i].get('DeviceUnicastId', None)
-            if deviceUnicastId == None:
+            if deviceUnicastId is None:
                 continue
             
             d = {

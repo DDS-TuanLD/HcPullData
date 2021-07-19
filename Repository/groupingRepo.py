@@ -18,19 +18,19 @@ class groupingRepo():
         values = []
         for i in range(len(l)):
             createdAt = l[i].get('createdAt')
-            if createdAt != None:
+            if createdAt is not None:
                 createdAt = datetime.datetime.strptime(createdAt, '%Y-%m-%dT%H:%M:%S.%fZ')
                 
             updatedAt = l[i].get('updatedAt')
-            if updatedAt != None:
+            if updatedAt is not None:
                 updatedAt = datetime.datetime.strptime(updatedAt, '%Y-%m-%dT%H:%M:%S.%fZ')
                 
             deletedAt = l[i].get('deletedAt')
-            if deletedAt != None:
+            if deletedAt is not None:
                 deletedAt = datetime.datetime.strptime(deletedAt, '%Y-%m-%dT%H:%M:%S.%fZ')
             
             groupingId = l[i].get('id', None)
-            if groupingId == None:
+            if groupingId is None:
                 continue
             
             d = {
@@ -43,7 +43,7 @@ class groupingRepo():
                 'DeletedAt': deletedAt
             }
             values.append(d)
-        if values == []:
+        if not values:
             return
         try:
             self.__context.execute(ins, values)
@@ -54,4 +54,3 @@ class groupingRepo():
         ins = self.__groupingTable.select().where(condition)
         rel = self.__context.execute(ins)
         return rel   
-    

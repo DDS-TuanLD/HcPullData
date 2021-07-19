@@ -25,7 +25,7 @@ class eventTriggerOutputDeviceMappingRepo():
                 }  
             values.append(d)
             
-        if values == []:
+        if not values:
             return
         try:
             self.__context.execute(ins, values)
