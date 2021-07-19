@@ -6,6 +6,79 @@ import logging
 from Database.Db import Db
 import Constant.Constant as const
 
+test_data = [
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "string",
+    "hasTimer": True,
+    "startAt": "2021-07-19T06:50:26.470Z",
+    "endAt": "2021-07-19T06:50:26.470Z",
+    "hasRepeater": True,
+    "eachMonday": True,
+    "eachTuesday": True,
+    "eachWednesday": True,
+    "eachThursday": True,
+    "eachFriday": True,
+    "eachSaturday": True,
+    "eachSunday": True,
+    "hasNotification": True,
+    "notificationDelayTime": 0,
+    "logicalOperatorId": 0,
+    "createdAt": "2021-07-19T06:50:26.470Z",
+    "updatedAt": "2021-07-19T06:50:26.470Z",
+    "deletedAt": "2021-07-19T06:50:26.470Z",
+    "eventTriggerInputDeviceMappings": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "inputDeviceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    ],
+    "eventTriggerInputDeviceSetupValues": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "inputDeviceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "deviceAttributeId": 0,
+        "comparisonOperatorId": 0,
+        "deviceAttributeValue": 0
+      }
+    ],
+    "eventTriggerOutputDeviceMappings": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "outputDeviceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    ],
+    "eventTriggerOutputDeviceSetupValues": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "outputDeviceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "deviceAttributeId": 0,
+        "deviceAttributeValue": 0
+      }
+    ],
+    "eventTriggerOutputGroupingMappings": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "outputGroupingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    ],
+    "eventTriggerOutputGroupingSetupValues": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "outputGroupingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "deviceAttributeId": 0,
+        "deviceAttributeValue": 0
+      }
+    ],
+    "eventTriggerOutputSceneMappings": [
+      {
+        "eventTriggerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "outputSceneId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+    ]
+  }
+]
+
 
 class RulePullHandler(IPull):
 
@@ -13,178 +86,188 @@ class RulePullHandler(IPull):
         super().__init__(log, http)
 
     async def PullAndSave(self):
-        await asyncio.sleep(1)
-        s = System(self._IPull__logger)
-        data = await s.SendHttpRequestTotUrl(self._IPull__http, const.SERVER_HOST + const.CLOUD_PULL_RULE_URL, {})
+        # await asyncio.sleep(1)
+        # s = System(self._IPull__logger)
+        # data = await s.SendHttpRequestTotUrl(self._IPull__http, const.SERVER_HOST + const.CLOUD_PULL_RULE_URL, {})
+        data = test_data
         if data is not None:
             self.__saveToDb(data)
             self.PullSuccess()
 
-    def __saveToDb(self, l: list):
+    def __saveToDb(self, data: list):
         db = Db()
-        db.Services.EventTriggerServices.AddManyEventTriggerWithCustomData(l, 2)
+        db.Services.EventTriggerServices.AddManyEventTriggerWithCustomData(data, 2)
 
-        eventTriggerInputDeviceMappings = []
-        deviceForEventTriggerInputDeviceMappings = []
+        eventTriggerInputDeviceMappingArray = []
+        deviceIdForEventTriggerInputDeviceMappings = []
 
-        eventTriggerInputDeviceSetupValues = []
-        deviceForEventTriggerInputDeviceSetupValues = []
+        eventTriggerInputDeviceSetupValueArray = []
+        deviceIdForEventTriggerInputDeviceSetupValues = []
 
-        eventTriggerOutputDeviceMappings = []
-        deviceForEventTriggerOutputDeviceMappings = []
+        eventTriggerOutputDeviceMappingArray = []
+        deviceIdForEventTriggerOutputDeviceMappings = []
 
-        eventTriggerOutputDeviceSetupValues = []
-        deviceForEventTriggerOutputDeviceSetupValues = []
+        eventTriggerOutputDeviceSetupValueArray = []
+        deviceIdForEventTriggerOutputDeviceSetupValues = []
 
-        eventTriggerOutputGroupingMappings = []
-        groupForEventTriggerOutputGroupingMappings = []
+        eventTriggerOutputGroupingMappingArray = []
+        groupIdForEventTriggerOutputGroupingMappings = []
 
-        eventTriggerOutputGroupingSetupValues = []
-        groupForEventTriggerOutputGroupingSetupValues = []
+        eventTriggerOutputGroupingSetupValueArray = []
+        groupIdForEventTriggerOutputGroupingSetupValues = []
 
-        eventTriggerOutputSceneMappings = []
-        sceneForEventTriggerOutputSceneMappings = []
+        eventTriggerOutputSceneMappingArray = []
+        sceneIdForEventTriggerOutputSceneMappings = []
 
-        for i in range(len(l)):
-            eventTriggerInputDeviceMappingsList = l[i].get("eventTriggerInputDeviceMappings", [])
-            eventTriggerInputDeviceSetupValuesList = l[i].get("eventTriggerInputDeviceSetupValues", [])
-            eventTriggerOutputDeviceMappingsList = l[i].get("eventTriggerOutputDeviceMappings", [])
-            eventTriggerOutputDeviceSetupValuesList = l[i].get("eventTriggerOutputDeviceSetupValues", [])
-            eventTriggerOutputGroupingMappingsList = l[i].get("eventTriggerOutputGroupingMappings", [])
-            eventTriggerOutputGroupingSetupValuesList = l[i].get("eventTriggerOutputGroupingSetupValues", [])
-            eventTriggerOutputSceneMappingsList = l[i].get("eventTriggerOutputSceneMappings", [])
+        for i in range(len(data)):
+            eventTriggerInputDeviceMappingsList = data[i].get("eventTriggerInputDeviceMappings", [])
+            eventTriggerInputDeviceSetupValuesList = data[i].get("eventTriggerInputDeviceSetupValues", [])
+            eventTriggerOutputDeviceMappingsList = data[i].get("eventTriggerOutputDeviceMappings", [])
+            eventTriggerOutputDeviceSetupValuesList = data[i].get("eventTriggerOutputDeviceSetupValues", [])
+            eventTriggerOutputGroupingMappingsList = data[i].get("eventTriggerOutputGroupingMappings", [])
+            eventTriggerOutputGroupingSetupValuesList = data[i].get("eventTriggerOutputGroupingSetupValues", [])
+            eventTriggerOutputSceneMappingsList = data[i].get("eventTriggerOutputSceneMappings", [])
 
             for s in range(len(eventTriggerInputDeviceMappingsList)):
-                d = eventTriggerInputDeviceMappingsList[s].get('inputDeviceId')
-                e = {
+                deviceId = eventTriggerInputDeviceMappingsList[s].get('inputDeviceId')
+                eventTriggerInputDeviceMappingObject = {
                     "EventTriggerId": eventTriggerInputDeviceMappingsList[s].get('eventTriggerId'),
                     "DeviceId": eventTriggerInputDeviceMappingsList[s].get('inputDeviceId'),
                     "DeviceUnicastId": None,
                 }
-                deviceForEventTriggerInputDeviceMappings.append(d)
-                eventTriggerInputDeviceMappings.append(e)
+                deviceIdForEventTriggerInputDeviceMappings.append(deviceId)
+                eventTriggerInputDeviceMappingArray.append(eventTriggerInputDeviceMappingObject)
 
-            for s1 in range(len(eventTriggerInputDeviceSetupValuesList)):
-                d = eventTriggerInputDeviceSetupValuesList[s1].get('inputDeviceId')
-                e = {
-                    "EventTriggerId": eventTriggerInputDeviceSetupValuesList[s1].get('eventTriggerId'),
-                    "DeviceId": eventTriggerInputDeviceSetupValuesList[s1].get('inputDeviceId'),
+            for s in range(len(eventTriggerInputDeviceSetupValuesList)):
+                deviceId = eventTriggerInputDeviceSetupValuesList[s].get('inputDeviceId')
+                eventTriggerInputDeviceSetupValueObject = {
+                    "EventTriggerId": eventTriggerInputDeviceSetupValuesList[s].get('eventTriggerId'),
+                    "DeviceId": eventTriggerInputDeviceSetupValuesList[s].get('inputDeviceId'),
                     "DeviceUnicastId": None,
-                    "DeviceAttributeId": eventTriggerInputDeviceSetupValuesList[s1].get('deviceAttributeId'),
-                    "ComparisonOperatorId": eventTriggerInputDeviceSetupValuesList[s1].get('comparisonOperatorId'),
-                    "DeviceAttributeValue": eventTriggerInputDeviceSetupValuesList[s1].get('deviceAttributeValue'),
-                    "DeviceAttributeValueMAX": eventTriggerInputDeviceSetupValuesList[s1].get('deviceAttributeValueMAX',
+                    "DeviceAttributeId": eventTriggerInputDeviceSetupValuesList[s].get('deviceAttributeId'),
+                    "ComparisonOperatorId": eventTriggerInputDeviceSetupValuesList[s].get('comparisonOperatorId'),
+                    "DeviceAttributeValue": eventTriggerInputDeviceSetupValuesList[s].get('deviceAttributeValue'),
+                    "DeviceAttributeValueMAX": eventTriggerInputDeviceSetupValuesList[s].get('deviceAttributeValueMAX',
                                                                                               -1000)
                 }
-                deviceForEventTriggerInputDeviceSetupValues.append(d)
-                eventTriggerInputDeviceSetupValues.append(e)
+                deviceIdForEventTriggerInputDeviceSetupValues.append(deviceId)
+                eventTriggerInputDeviceSetupValueArray.append(eventTriggerInputDeviceSetupValueObject)
 
-            for s2 in range(len(eventTriggerOutputDeviceMappingsList)):
-                d = eventTriggerOutputDeviceMappingsList[s2].get('outputDeviceId')
-                e = {
-                    "EventTriggerId": eventTriggerOutputDeviceMappingsList[s2].get('eventTriggerId'),
-                    "DeviceId": eventTriggerOutputDeviceMappingsList[s2].get('outputDeviceId'),
+            for s in range(len(eventTriggerOutputDeviceMappingsList)):
+                deviceId = eventTriggerOutputDeviceMappingsList[s].get('outputDeviceId')
+                eventTriggerOutputDeviceMappingObject = {
+                    "EventTriggerId": eventTriggerOutputDeviceMappingsList[s].get('eventTriggerId'),
+                    "DeviceId": eventTriggerOutputDeviceMappingsList[s].get('outputDeviceId'),
                     "DeviceUnicastId": None,
                 }
-                deviceForEventTriggerOutputDeviceMappings.append(d)
-                eventTriggerOutputDeviceMappings.append(e)
+                deviceIdForEventTriggerOutputDeviceMappings.append(deviceId)
+                eventTriggerOutputDeviceMappingArray.append(eventTriggerOutputDeviceMappingObject)
 
-            for s3 in range(len(eventTriggerOutputDeviceSetupValuesList)):
-                d = eventTriggerOutputDeviceSetupValuesList[s3].get('outputDeviceId')
-                e = {
-                    "EventTriggerId": eventTriggerOutputDeviceSetupValuesList[s3].get('eventTriggerId'),
-                    "DeviceId": eventTriggerOutputDeviceSetupValuesList[s3].get('outputDeviceId'),
+            for s in range(len(eventTriggerOutputDeviceSetupValuesList)):
+                deviceId = eventTriggerOutputDeviceSetupValuesList[s].get('outputDeviceId')
+                eventTriggerOutputDeviceSetupValueObject = {
+                    "EventTriggerId": eventTriggerOutputDeviceSetupValuesList[s].get('eventTriggerId'),
+                    "DeviceId": eventTriggerOutputDeviceSetupValuesList[s].get('outputDeviceId'),
                     "DeviceUnicastId": None,
-                    "DeviceAttributeId": eventTriggerOutputDeviceSetupValuesList[s3].get('deviceAttributeId'),
-                    "DeviceAttributeValue": eventTriggerOutputDeviceSetupValuesList[s3].get('deviceAttributeValue')
+                    "DeviceAttributeId": eventTriggerOutputDeviceSetupValuesList[s].get('deviceAttributeId'),
+                    "DeviceAttributeValue": eventTriggerOutputDeviceSetupValuesList[s].get('deviceAttributeValue')
                 }
-                deviceForEventTriggerOutputDeviceSetupValues.append(d)
-                eventTriggerOutputDeviceSetupValues.append(e)
+                deviceIdForEventTriggerOutputDeviceSetupValues.append(deviceId)
+                eventTriggerOutputDeviceSetupValueArray.append(eventTriggerOutputDeviceSetupValueObject)
 
-            for s4 in range(len(eventTriggerOutputGroupingMappingsList)):
-                g = eventTriggerOutputGroupingMappingsList[s4].get('outputGroupingId')
-                e = {
-                    "EventTriggerId": eventTriggerOutputGroupingMappingsList[s4].get('eventTriggerId'),
-                    "GroupingId": eventTriggerOutputGroupingMappingsList[s4].get('outputGroupingId'),
+            for s in range(len(eventTriggerOutputGroupingMappingsList)):
+                groupId = eventTriggerOutputGroupingMappingsList[s].get('outputGroupingId')
+                eventTriggerOutputGroupingMappingObject = {
+                    "EventTriggerId": eventTriggerOutputGroupingMappingsList[s].get('eventTriggerId'),
+                    "GroupingId": eventTriggerOutputGroupingMappingsList[s].get('outputGroupingId'),
                     "GroupUnicastId": None,
                 }
-                groupForEventTriggerOutputGroupingMappings.append(g)
-                eventTriggerOutputGroupingMappings.append(e)
+                groupIdForEventTriggerOutputGroupingMappings.append(groupId)
+                eventTriggerOutputGroupingMappingArray.append(eventTriggerOutputGroupingMappingObject)
 
-            for s5 in range(len(eventTriggerOutputGroupingSetupValuesList)):
-                g = eventTriggerOutputGroupingSetupValuesList[s5].get('outputGroupingId')
-                e = {
-                    "EventTriggerId": eventTriggerOutputGroupingSetupValuesList[s5].get('eventTriggerId'),
-                    "GroupingId": eventTriggerOutputGroupingSetupValuesList[s5].get('outputGroupingId'),
+            for s in range(len(eventTriggerOutputGroupingSetupValuesList)):
+                groupId = eventTriggerOutputGroupingSetupValuesList[s].get('outputGroupingId')
+                eventTriggerOutputGroupingSetupValueObject = {
+                    "EventTriggerId": eventTriggerOutputGroupingSetupValuesList[s].get('eventTriggerId'),
+                    "GroupingId": eventTriggerOutputGroupingSetupValuesList[s].get('outputGroupingId'),
                     "GroupUnicastId": None,
-                    "DeviceAttributeId": eventTriggerOutputGroupingSetupValuesList[s5].get('deviceAttributeId'),
-                    "DeviceAttributeValue": eventTriggerOutputGroupingSetupValuesList[s5].get('deviceAttributeValue')
+                    "DeviceAttributeId": eventTriggerOutputGroupingSetupValuesList[s].get('deviceAttributeId'),
+                    "DeviceAttributeValue": eventTriggerOutputGroupingSetupValuesList[s].get('deviceAttributeValue')
                 }
-                groupForEventTriggerOutputGroupingSetupValues.append(g)
-                eventTriggerOutputGroupingSetupValues.append(e)
+                groupIdForEventTriggerOutputGroupingSetupValues.append(groupId)
+                eventTriggerOutputGroupingSetupValueArray.append(eventTriggerOutputGroupingSetupValueObject)
 
-            for s6 in range(len(eventTriggerOutputSceneMappingsList)):
-                c = eventTriggerOutputSceneMappingsList[s6].get('outputSceneId')
-                e = {
-                    "EventTriggerId": eventTriggerOutputSceneMappingsList[s6].get('eventTriggerId'),
-                    "SceneId": eventTriggerOutputSceneMappingsList[s6].get('outputSceneId'),
+            for s in range(len(eventTriggerOutputSceneMappingsList)):
+                sceneId = eventTriggerOutputSceneMappingsList[s].get('outputSceneId')
+                eventTriggerOutputSceneMappingObject = {
+                    "EventTriggerId": eventTriggerOutputSceneMappingsList[s].get('eventTriggerId'),
+                    "SceneId": eventTriggerOutputSceneMappingsList[s].get('outputSceneId'),
                     "SceneUnicastID": None,
                 }
-                sceneForEventTriggerOutputSceneMappings.append(c)
-                eventTriggerOutputSceneMappings.append(e)
+                sceneIdForEventTriggerOutputSceneMappings.append(sceneId)
+                eventTriggerOutputSceneMappingArray.append(eventTriggerOutputSceneMappingObject)
 
-        rel1 = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceForEventTriggerInputDeviceMappings))
-        dt1 = rel1.fetchall()
-        for m1 in range(len(dt1)):
-            eventTriggerInputDeviceMappings[m1]['DeviceUnicastId'] = dt1[m1]['DeviceUnicastId']
+        deviceForEventTriggerInputDeviceMappingRecords = db.Services.DeviceServices.FindDeviceWithCondition(
+            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerInputDeviceMappings))
+        deviceForEventTriggerInputDeviceMappingArray = deviceForEventTriggerInputDeviceMappingRecords.fetchall()
+        for device in range(len(deviceForEventTriggerInputDeviceMappingArray)):
+            eventTriggerInputDeviceMappingArray[device]['DeviceUnicastId'] = \
+                deviceForEventTriggerInputDeviceMappingArray[device]['DeviceUnicastId']
         db.Services.EventTriggerInputDeviceMappingServices.AddManyEventTriggerInputDeviceMappingWithCustomData(
-            eventTriggerInputDeviceMappings)
+            eventTriggerInputDeviceMappingArray)
 
-        rel2 = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceForEventTriggerInputDeviceSetupValues))
-        dt2 = rel2.fetchall()
-        for m2 in range(len(dt2)):
-            eventTriggerInputDeviceSetupValues[m2]['DeviceUnicastId'] = dt2[m2]['DeviceUnicastId']
+        deviceForEventTriggerInputDeviceSetupValueRecords = db.Services.DeviceServices.FindDeviceWithCondition(
+            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerInputDeviceSetupValues))
+        deviceForEventTriggerInputDeviceSetupValueArray = deviceForEventTriggerInputDeviceSetupValueRecords.fetchall()
+        for device in range(len(deviceForEventTriggerInputDeviceSetupValueArray)):
+            eventTriggerInputDeviceSetupValueArray[device]['DeviceUnicastId'] = \
+                deviceForEventTriggerInputDeviceSetupValueArray[device]['DeviceUnicastId']
         db.Services.EventTriggerInputDeviceSetupValueServices.AddManyEventTriggerInputDeviceSetupValueWithCustomData(
-            eventTriggerInputDeviceSetupValues)
+            eventTriggerInputDeviceSetupValueArray)
 
-        rel3 = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceForEventTriggerOutputDeviceMappings))
-        dt3 = rel3.fetchall()
-        for m3 in range(len(dt3)):
-            eventTriggerOutputDeviceMappings[m3]['DeviceUnicastId'] = dt3[m3]['DeviceUnicastId']
+        deviceForEventTriggerOutputDeviceMappingRecords = db.Services.DeviceServices.FindDeviceWithCondition(
+            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerOutputDeviceMappings))
+        deviceForEventTriggerOutputDeviceMappingArray = deviceForEventTriggerOutputDeviceMappingRecords.fetchall()
+        for device in range(len(deviceForEventTriggerOutputDeviceMappingArray)):
+            eventTriggerOutputDeviceMappingArray[device]['DeviceUnicastId'] = \
+                deviceForEventTriggerOutputDeviceMappingArray[device]['DeviceUnicastId']
         db.Services.EventTriggerOutputDeviceMappingServices.AddManyEventTriggerOutputDeviceMappingWithCustomData(
-            eventTriggerOutputDeviceMappings)
+            eventTriggerOutputDeviceMappingArray)
 
-        rel4 = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceForEventTriggerOutputDeviceSetupValues))
-        dt4 = rel4.fetchall()
-        for m4 in range(len(dt4)):
-            eventTriggerOutputDeviceSetupValues[m4]['DeviceUnicastId'] = dt4[m4]['DeviceUnicastId']
+        deviceForEventTriggerOutputDeviceSetupValueRecords = db.Services.DeviceServices.FindDeviceWithCondition(
+            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerOutputDeviceSetupValues))
+        deviceForEventTriggerOutputDeviceSetupValueArray = deviceForEventTriggerOutputDeviceSetupValueRecords.fetchall()
+        for device in range(len(deviceForEventTriggerOutputDeviceSetupValueArray)):
+            eventTriggerOutputDeviceSetupValueArray[device]['DeviceUnicastId'] = \
+                deviceForEventTriggerOutputDeviceSetupValueArray[device]['DeviceUnicastId']
         db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyEventTriggerOutputDeviceSetupValueWithCustomData(
-            eventTriggerOutputDeviceSetupValues)
+            eventTriggerOutputDeviceSetupValueArray)
 
-        rel5 = db.Services.GroupingServices.FindGroupWithCondition(
-            db.Table.GroupingTable.c.GroupingId.in_(groupForEventTriggerOutputGroupingMappings))
-        dt5 = rel5.fetchall()
-        for m5 in range(len(dt5)):
-            eventTriggerOutputGroupingMappings[m5]['GroupUnicastId'] = dt5[m5]['GroupUnicastId']
+        groupForEventTriggerOutputGroupingMappingRecords = db.Services.GroupingServices.FindGroupWithCondition(
+            db.Table.GroupingTable.c.GroupingId.in_(groupIdForEventTriggerOutputGroupingMappings))
+        groupForEventTriggerOutputGroupingMappingRecordArray = \
+            groupForEventTriggerOutputGroupingMappingRecords.fetchall()
+        for group in range(len(groupForEventTriggerOutputGroupingMappingRecordArray)):
+            eventTriggerOutputGroupingMappingArray[group]['GroupUnicastId'] = \
+                groupForEventTriggerOutputGroupingMappingRecordArray[group]['GroupUnicastId']
         db.Services.EventTriggerOutputGroupingMappingServices.AddManyEventTriggerOutputGroupMappingWithCustomData(
-            eventTriggerOutputGroupingMappings)
+            eventTriggerOutputGroupingMappingArray)
 
-        rel6 = db.Services.GroupingServices.FindGroupWithCondition(
-            db.Table.GroupingTable.c.GroupingId.in_(groupForEventTriggerOutputGroupingSetupValues))
-        dt6 = rel6.fetchall()
-        for m6 in range(len(dt6)):
-            eventTriggerOutputGroupingSetupValues[m6]['GroupUnicastId'] = dt6[m6]['GroupUnicastId']
+        groupForEventTriggerOutputGroupingSetupValueRecords = db.Services.GroupingServices.FindGroupWithCondition(
+            db.Table.GroupingTable.c.GroupingId.in_(groupIdForEventTriggerOutputGroupingSetupValues))
+        groupForEventTriggerOutputGroupingSetupValueArray = \
+            groupForEventTriggerOutputGroupingSetupValueRecords.fetchall()
+        for group in range(len(groupForEventTriggerOutputGroupingSetupValueArray)):
+            eventTriggerOutputGroupingSetupValueArray[group]['GroupUnicastId'] = \
+                groupForEventTriggerOutputGroupingSetupValueArray[group]['GroupUnicastId']
         db.Services.EventTriggerOutputGroupingSetupValueServices.AddManyEventTriggerOutputGroupSetupValueWithCustomData(
-            eventTriggerOutputGroupingSetupValues)
+            eventTriggerOutputGroupingSetupValueArray)
 
-        rel7 = db.Services.EventTriggerServices.FindEventTriggerWithCondition(
-            db.Table.EventTriggerTable.c.EventTriggerId.in_(sceneForEventTriggerOutputSceneMappings))
-        dt7 = rel7.fetchall()
-        for m7 in range(len(dt7)):
-            eventTriggerOutputSceneMappings[m7]['SceneUnicastID'] = dt7[m7]['SceneUnicastID']
+        sceneForEventTriggerOutputSceneMappingRecords = db.Services.EventTriggerServices.FindEventTriggerWithCondition(
+            db.Table.EventTriggerTable.c.EventTriggerId.in_(sceneIdForEventTriggerOutputSceneMappings))
+        sceneForEventTriggerOutputSceneMappingArray = sceneForEventTriggerOutputSceneMappingRecords.fetchall()
+        for scene in range(len(sceneForEventTriggerOutputSceneMappingArray)):
+            eventTriggerOutputSceneMappingArray[scene]['SceneUnicastID'] = \
+                sceneForEventTriggerOutputSceneMappingArray[scene]['SceneUnicastID']
         db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomDataType2(
-            eventTriggerOutputSceneMappings)
+            eventTriggerOutputSceneMappingArray)

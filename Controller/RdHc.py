@@ -7,13 +7,14 @@ import logging
 import threading
 from Constract.IPull import IPull
 from Constract.IHandler import IHandler
+from Constract.IController import IController
 from HcServices.Mqtt import Mqtt
 from Constract.ITransport import ITransport
 from HcServices.Led import Led
 from Helper.System import System
 
 
-class RdHc:
+class RdHc(IController):
     __httpServices: Http
     __globalVariables: GlobalVariables
     __lock: threading.Lock
@@ -65,7 +66,7 @@ class RdHc:
         s = System(self.__logger)
         while True:
             await asyncio.sleep(2)
-            if self.__globalVariables.NumberOfPullApiSuccess == 4:
+            if self.__globalVariables.NumberOfPullApiSuccess == const.NUMBERS_OF_PULL_PROCESS:
                 report_message = s.CreatePullStatusReportMessage(const.PULL_SUCCESS)
                 self.__mqttServices.send(const.MQTT_RESPONSE_TOPIC, report_message)
                 await asyncio.sleep(2)
@@ -102,7 +103,7 @@ class RdHc:
         await self.__scenePullHandler.PullAndSave()
         self.__rulePullHandler.DeExhibit()
 
-    async def Run(self):
+    async def run(self):
         
         s = System(self.__logger)
         #s.StopOthersPythonProgramAndCronjob()
@@ -116,12 +117,7 @@ class RdHc:
         task6 = asyncio.create_task(self.__HcReportPullCloudStatus())
         tasks = [task1, task2, task3, task4, task5, task6]
         await asyncio.gather(*tasks)
-        
         self.__ledService.ServiceLedControl.Off()
         #s.StartCronjob()
         
         return
-
-        
-        
-   

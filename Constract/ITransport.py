@@ -1,5 +1,4 @@
-from abc import ABC, ABCMeta, abstractmethod
-import asyncio
+from abc import ABCMeta, abstractmethod
 import queue
 
 

@@ -46,7 +46,7 @@ hc = RdHc(logger, http, mqtt, led, mqttDataHandler, devicePullHandler, groupingP
 
 async def main():
     db.Init()
-    await hc.Run()
+    await hc.run()
     
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())

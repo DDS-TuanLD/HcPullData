@@ -48,16 +48,7 @@ class Http():
     
     def CreateNewHttpRequest(
         self, url: str = None, body_data: dict = {}, header: CaseInsensitiveDict = {}):
-        """ Create new http request
 
-        Args:
-            url (str): [url want to request]
-            body_data (dict): [body of request]
-            cookie (dict): [cookie of request] 
-        Returns:
-            [HttpRequest]: [new HttpRequest instance]
-        """
-        
         newHttpRequest = HttpRequest()
         newHttpRequest.Body = body_data
         newHttpRequest.Header = header
@@ -67,15 +58,6 @@ class Http():
 
     async def Get(
         self, session: aiohttp.ClientSession, req: HttpRequest):
-        """ Send get request
-
-        Args:
-            session (aiohttp.ClientSession): [aiohttp session]
-            req (HttpRequest): [request]
-
-        Returns:
-            [ClientResponse]: [response of request]
-        """
         resp = None
         try:
             async with session.get(req.Url, headers=req.Header, json=req.Body) as resp:
@@ -89,15 +71,6 @@ class Http():
 
     async def Post(
         self, session: aiohttp.ClientSession, req: HttpRequest):
-        """ Send post request
-
-        Args:
-            session (aiohttp.ClientSession): [aiohttp session]
-            req (HttpRequest): [request]
-
-        Returns:
-            [ClientResponse]: [response of request]
-        """
         try:
             async with session.post(req.Url, headers=req.Header, json=req.Body) as resp:
                 resp.raise_for_status()
@@ -110,15 +83,6 @@ class Http():
     
     async def Put(
         self, session: aiohttp.ClientSession, req: HttpRequest):
-        """ Send put request
-
-        Args:
-            session (aiohttp.ClientSession): [aiohttp session]
-            req (HttpRequest): [request]
-
-        Returns:
-            [ClientResponse]: [response of request]
-        """
         resp = None
         try:
             async with session.put(req.Url, headers=req.Header, json=req.Body) as resp:
@@ -132,15 +96,6 @@ class Http():
 
     async def Delete(
         self, session: aiohttp.ClientSession, req: HttpRequest):
-        """ Send delete request
-
-        Args:
-            session (aiohttp.ClientSession): [aiohttp session]
-            req (HttpRequest): [request]
-
-        Returns:
-            [ClientResponse]: [response of request]
-        """
         resp = None
         try:
             async with session.delete(req.Url, headers=req.Header, json=req.Body) as resp:
@@ -151,5 +106,3 @@ class Http():
         except Exception as err:
             return ""
         return resp
-    
-    

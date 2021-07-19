@@ -1,13 +1,10 @@
 from Constract.IHandler import IHandler
-import asyncio
 import logging
-from HcServices.Mqtt import Mqtt
 from Constract.ITransport import ITransport
 from Cache.GlobalVariables import GlobalVariables
 import Constant.Constant as const
 import json
 from Database.Db import Db
-from Model.systemConfiguration import systemConfiguration
 from Model.userData import userData
 
 
@@ -24,11 +21,13 @@ class MqttDataHandler(IHandler):
         self.__globalVariables = GlobalVariables()
 
     def handler(self, item):
+        topic = item["topic"]
+        msg = item["msg"]
         switcher = {
             const.MQTT_CONTROL_TOPIC: self.__handlerTopicHcControl
         }
-        func = switcher.get(item["topic"])
-        func(item["msg"])
+        func = switcher.get(topic)
+        func(msg)
         return
 
     def __handlerTopicHcControl(self, data):

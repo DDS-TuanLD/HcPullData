@@ -22,22 +22,27 @@ class GroupingPullHandler(IPull):
     def __saveToDb(self, data: list):
         db = Db()
         db.Services.GroupingServices.AddManyGroupingWithCustomData(data)
-        device = []
-        groupDeviceMappings = []
+        
+        deviceIdForGroupDeviceMapping = []
+        groupDeviceMappingArray = []
+        
         for i in range(len(data)):
-            gs = data[i].get("groupingDeviceMappings", [])
-            for j in range(len(gs)):
-                d = gs[j].get('deviceId')
-                gDM = {
-                    "GroupingId": gs[j].get('groupingId'),
+            groupingDeviceMappingsList = data[i].get("groupingDeviceMappings", [])
+            for j in range(len(groupingDeviceMappingsList)):
+                deviceId = groupingDeviceMappingsList[j].get('deviceId')
+                groupingObject = {
+                    "GroupingId": groupingDeviceMappingsList[j].get('groupingId'),
                     "GroupUnicastId": data[j].get('unicastId'),
-                    "DeviceId": gs[j].get('deviceId'),
+                    "DeviceId": groupingDeviceMappingsList[j].get('deviceId'),
                     "DeviceUnicastId": None
                 }
-                device.append(d)
-                groupDeviceMappings.append(gDM)
-        rel = db.Services.DeviceServices.FindDeviceWithCondition(db.Table.DeviceTable.c.DeviceId.in_(device))
-        dt = rel.fetchall()
-        for j in range(len(dt)):
-            groupDeviceMappings[j]['DeviceUnicastId'] = dt[j]['DeviceUnicastId']
-        db.Services.GroupingDeviceMappingServices.AddManyGroupingDeviceMappingWithCustomData(groupDeviceMappings)
+                deviceIdForGroupDeviceMapping.append(deviceId)
+                groupDeviceMappingArray.append(groupingObject)
+                
+        deviceForGroupDeviceMappingRecords = db.Services.DeviceServices.FindDeviceWithCondition(
+            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForGroupDeviceMapping))
+        deviceForGroupDeviceMappingArray = deviceForGroupDeviceMappingRecords.fetchall()
+        for device in range(len(deviceForGroupDeviceMappingArray)):
+            groupDeviceMappingArray[device]['DeviceUnicastId'] = \
+                deviceForGroupDeviceMappingArray[device]['DeviceUnicastId']
+        db.Services.GroupingDeviceMappingServices.AddManyGroupingDeviceMappingWithCustomData(groupDeviceMappingArray)

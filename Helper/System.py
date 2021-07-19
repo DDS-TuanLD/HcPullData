@@ -105,10 +105,12 @@ class System:
         refreshToken = self.__globalVariables.RefreshToken
         if refreshToken == "":
             return ""
+
         tokenUrl = const.SERVER_HOST + const.TOKEN_URL
         cookie = f"RefreshToken={refreshToken}"
         header = http.CreateNewHttpHeader(cookie = cookie, endProfileId=self.__globalVariables.EndUserId)
         req = http.CreateNewHttpRequest(url=tokenUrl, header=header)
+
         session = aiohttp.ClientSession()
         res = await http.Post(session, req)  
         token = ""
