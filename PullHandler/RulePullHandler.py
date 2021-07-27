@@ -1,10 +1,7 @@
 from Constract.IPull import IPull
-import asyncio
 from HcServices.Http import Http
-from Helper.System import System
 import logging
 from Database.Db import Db
-import Constant.Constant as const
 
 test_data = [
   {
@@ -148,7 +145,7 @@ class RulePullHandler(IPull):
                     "ComparisonOperatorId": eventTriggerInputDeviceSetupValuesList[s].get('comparisonOperatorId'),
                     "DeviceAttributeValue": eventTriggerInputDeviceSetupValuesList[s].get('deviceAttributeValue'),
                     "DeviceAttributeValueMAX": eventTriggerInputDeviceSetupValuesList[s].get('deviceAttributeValueMAX',
-                                                                                              -1000)
+                                                                                             -1000)
                 }
                 deviceIdForEventTriggerInputDeviceSetupValues.append(deviceId)
                 eventTriggerInputDeviceSetupValueArray.append(eventTriggerInputDeviceSetupValueObject)

@@ -17,10 +17,11 @@ from Table.eventTriggerOutputDeviceSetupValueTable import eventTriggerOutputDevi
 from Table.eventTriggerOutputGroupingMappingTable import eventTriggerOutputGroupingMappingTable
 from Table.eventTriggerOutputGroupingSetupValueTable import eventTriggerOutputGroupingSetupValueTable
 from Table.eventTriggerOutputSceneMappingTable import eventTriggerOutputSceneMappingTable
-
+from Table.irDeviceAttributeValueTable import irDeviceAttributeValueTable
 from sqlalchemy import MetaData
 
-class tableManager():
+
+class tableManager:
     __systemConfigurationTable: systemConfigurationTable
     __userDataTable: userDataTable
     __deviceAttributeTable: deviceAttributeValueTable
@@ -40,7 +41,8 @@ class tableManager():
     __eventTriggerOutputGroupingMappingTable: eventTriggerOutputGroupingMappingTable
     __eventTriggerOutputGroupingSetupValueTable: eventTriggerOutputGroupingSetupValueTable
     __eventTriggerOutputSceneMappingTable: eventTriggerOutputSceneMappingTable
-        
+    __irDeviceAttributeValueTable: irDeviceAttributeValueTable
+
     def __init__(self, metadata: MetaData):
         self.__systemConfigurationTable = systemConfigurationTable(metadata)
         self.__userDataTable = userDataTable(metadata)
@@ -61,79 +63,84 @@ class tableManager():
         self.__eventTriggerOutputGroupingMappingTable = eventTriggerOutputGroupingMappingTable(metadata)
         self.__eventTriggerOutputGroupingSetupValueTable = eventTriggerOutputGroupingSetupValueTable(metadata)
         self.__eventTriggerOutputSceneMappingTable = eventTriggerOutputSceneMappingTable(metadata)
-     
-    @property 
+        self.__irDeviceAttributeValueTable = irDeviceAttributeValueTable(metadata)
+
+    @property
+    def IrDeviceAttributeValueTable(self):
+        return self.__irDeviceAttributeValueTable.irDeviceAttributeValueTable
+
+    @property
     def EventTriggerInputDeviceMappingTable(self):
         return self.__eventTriggerInputDeviceMappingTable.eventTriggerInputDeviceMappingTable
-     
+
     @property
     def EventTriggerInputDeviceSetupValueTable(self):
         return self.__eventTriggerInputDeviceSetupValueTable.eventTriggerInputDeviceSetupValueTable
-        
-    @property 
+
+    @property
     def EventTriggerInputGroupingMappingTable(self):
         return self.__eventTriggerInputGroupingMappingTable.eventTriggerInputGroupingMappingTable
-    
+
     @property
     def EventTriggerOutputDeviceMappingTable(self):
         return self.__eventTriggerOutputDeviceMappingTable.eventTriggerOutputDeviceMappingTable
-    
+
     @property
     def EventTriggerOutputDeviceSetupValueTable(self):
         return self.__eventTriggerOutputDeviceSetupValueTable.eventTriggerOutputDeviceSetupValueTable
-        
+
     @property
     def EventTriggerOutputGroupingSetupValueTable(self):
         return self.__eventTriggerOutputGroupingSetupValueTable.eventTriggerOutputGroupingSetupValueTable
-    
+
     @property
     def EventTriggerOutputGroupingMappingTable(self):
         return self.__eventTriggerOutputGroupingMappingTable.eventTriggerOutputGroupingMappingTable
-    
-    @property  
-    def  EventTriggerOutputSceneMappingTable(self):
+
+    @property
+    def EventTriggerOutputSceneMappingTable(self):
         return self.__eventTriggerOutputSceneMappingTable.eventTriggerOutputSceneMappingTable
-        
+
     @property
     def EventTriggerIdTable(self):
         return self.__eventTriggerIDTable.eventTriggerIDTable
-        
+
     @property
     def DeviceAttributeTable(self):
         return self.__deviceAttributeTable.deviceAttributeTable
-    
+
     @property
     def GroupIdTable(self):
         return self.__groupIdTable.groupIDTable
-    
+
     @property
     def EventTriggerTypeTable(self):
         return self.__eventTriggerTypeTable.eventTriggerTypeTable
-    
+
     @property
     def EventTriggerTable(self):
         return self.__eventTriggerTable.eventTriggerTable
-    
+
     @property
     def GroupingDeviceMappingTable(self):
         return self.__groupingDeviceMappingTable.groupingDeviceMappingTable
-        
-    @property 
+
+    @property
     def DeviceAttributeValueTable(self):
         return self.__deviceAttributeValueTable.deviceAttributeValueTable
-        
+
     @property
     def SystemConfigurationTable(self):
         return self.__systemConfigurationTable.systemConfigurationTable
-    
+
     @property
     def UserDataTable(self):
         return self.__userDataTable.userDataTable
-    
+
     @property
     def DeviceTable(self):
         return self.__deviceTable.deviceTable
-    
+
     @property
     def GroupingTable(self):
         return self.__groupingTable.groupingTable

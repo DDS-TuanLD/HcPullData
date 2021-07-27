@@ -17,11 +17,12 @@ from ModelServices.eventTriggerOutputDeviceSetupValueServices import eventTrigge
 from ModelServices.eventTriggerOutputGroupingMappingServices import eventTriggerOutputGroupingMappingServices
 from ModelServices.eventTriggerOutputGroupingSetupValueServices import eventTriggerOutputGroupingSetupValueServices
 from ModelServices.eventTriggerOutputSceneMappingServices import eventTriggerOutputSceneMappingServices
-
+from ModelServices.irDeviceAttributeValueServices import irDeviceAttributeValueServices
 from Table.tableManager import tableManager
 from sqlalchemy.engine.base import Connection
 
-class  modelServicesManager():
+
+class modelServicesManager:
     __systemConfigurationServices: systemConfigurationServices
     __userDataService: userDataServices
     __deviceAttributeValueService: deviceAttributeValueServices
@@ -29,19 +30,20 @@ class  modelServicesManager():
     __groupingService: groupingServices
     __groupingDeviceMappingService: groupingDeviceMappingServices
     __deviceAttributeService: deviceAttributeServices
-    __groupIdService : groupIdServices  
+    __groupIdService: groupIdServices
     __eventTriggerService: eventTriggerServices  
     __eventTriggerIdService: eventTriggerIdServices
     __eventTriggerTypeService: eventTriggerTypeServices
-    __eventTriggerInputDeviceMappingService : eventTriggerInputDeviceMappingServices
+    __eventTriggerInputDeviceMappingService: eventTriggerInputDeviceMappingServices
     __eventTriggerInputDeviceSetupValueService: eventTriggerInputDeviceSetupValueServices
     __eventTriggerInputGroupingMappingService: eventTriggerInputGroupingMappingServices
-    __eventTriggerOutputDeviceMappingService : eventTriggerOutputDeviceMappingServices
+    __eventTriggerOutputDeviceMappingService: eventTriggerOutputDeviceMappingServices
     __eventTriggerOutputDeviceSetupValueService: eventTriggerOutputDeviceSetupValueServices
     __eventTriggerOutputGroupingMappingServices: eventTriggerOutputGroupingMappingServices
     __eventTriggerOutputGroupingSetupValueService: eventTriggerOutputGroupingSetupValueServices
     __eventTriggerOutputSceneMappingService: eventTriggerOutputSceneMappingServices
-    
+    __irDeviceAttributeValueService: irDeviceAttributeValueServices
+
     def __init__(self, table: tableManager, context: Connection):
         self.__systemConfigurationServices = systemConfigurationServices(table.SystemConfigurationTable, context)
         self.__userDataService = userDataServices(table.UserDataTable, context)
@@ -54,15 +56,29 @@ class  modelServicesManager():
         self.__eventTriggerService = eventTriggerServices(table.EventTriggerTable, context)
         self.__eventTriggerIdService = eventTriggerIdServices(table.EventTriggerIdTable, context)
         self.__eventTriggerTypeService = eventTriggerTypeServices(table.EventTriggerTypeTable, context)
-        self.__eventTriggerInputDeviceMappingService = eventTriggerInputDeviceMappingServices(table.EventTriggerInputDeviceMappingTable, context)
-        self.__eventTriggerInputDeviceSetupValueService = eventTriggerInputDeviceSetupValueServices(table.EventTriggerInputDeviceSetupValueTable, context)
-        self.__eventTriggerInputGroupingMappingService = eventTriggerInputGroupingMappingServices(table.EventTriggerInputGroupingMappingTable, context)
-        self.__eventTriggerOutputDeviceMappingService = eventTriggerOutputDeviceMappingServices(table.EventTriggerOutputDeviceMappingTable, context)
-        self.__eventTriggerOutputDeviceSetupValueService = eventTriggerOutputDeviceSetupValueServices(table.EventTriggerOutputDeviceSetupValueTable, context)
-        self.__eventTriggerOutputGroupingMappingServices = eventTriggerOutputGroupingMappingServices(table.EventTriggerOutputGroupingMappingTable, context)
-        self.__eventTriggerOutputGroupingSetupValueService = eventTriggerOutputGroupingSetupValueServices(table.EventTriggerOutputGroupingSetupValueTable, context)
-        self.__eventTriggerOutputSceneMappingService = eventTriggerOutputSceneMappingServices(table.EventTriggerOutputSceneMappingTable, context)
-        
+        self.__eventTriggerInputDeviceMappingService = \
+            eventTriggerInputDeviceMappingServices(table.EventTriggerInputDeviceMappingTable, context)
+        self.__eventTriggerInputDeviceSetupValueService = \
+            eventTriggerInputDeviceSetupValueServices(table.EventTriggerInputDeviceSetupValueTable, context)
+        self.__eventTriggerInputGroupingMappingService = \
+            eventTriggerInputGroupingMappingServices(table.EventTriggerInputGroupingMappingTable, context)
+        self.__eventTriggerOutputDeviceMappingService = \
+            eventTriggerOutputDeviceMappingServices(table.EventTriggerOutputDeviceMappingTable, context)
+        self.__eventTriggerOutputDeviceSetupValueService = \
+            eventTriggerOutputDeviceSetupValueServices(table.EventTriggerOutputDeviceSetupValueTable, context)
+        self.__eventTriggerOutputGroupingMappingServices = \
+            eventTriggerOutputGroupingMappingServices(table.EventTriggerOutputGroupingMappingTable, context)
+        self.__eventTriggerOutputGroupingSetupValueService = \
+            eventTriggerOutputGroupingSetupValueServices(table.EventTriggerOutputGroupingSetupValueTable, context)
+        self.__eventTriggerOutputSceneMappingService = \
+            eventTriggerOutputSceneMappingServices(table.EventTriggerOutputSceneMappingTable, context)
+        self.__irDeviceAttributeValueService = \
+            irDeviceAttributeValueServices(table.IrDeviceAttributeValueTable, context)
+
+    @property
+    def IrDeviceAttributeValueServices(self):
+        return self.__irDeviceAttributeValueService
+
     @property
     def EventTriggerInputDeviceMappingServices(self):
         return self.__eventTriggerInputDeviceMappingService

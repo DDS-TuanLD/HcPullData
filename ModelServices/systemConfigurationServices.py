@@ -3,7 +3,8 @@ from Model.systemConfiguration import systemConfiguration
 from sqlalchemy import Table
 from sqlalchemy.engine.base import Connection
 
-class systemConfigurationServices():
+
+class systemConfigurationServices:
     __systemConfigurationRepo: systemConfigurationRepo
     
     def __init__(self, SystemConfigurationTable: Table, context: Connection):

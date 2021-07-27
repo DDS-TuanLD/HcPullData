@@ -5,12 +5,13 @@ import asyncio
 import datetime
 from sqlalchemy.engine.base import Connection
 
-class eventTriggerOutputSceneMappingRepo():
+
+class eventTriggerOutputSceneMappingRepo:
     __eventTriggerOutputSceneMappingRepoTable: Table
     __context: Connection
     
-    def __init__(self, eventTriggerOutputSceneMappingRepoTable: Table, context: Connection):
-        self.__eventTriggerOutputSceneMappingRepoTable = eventTriggerOutputSceneMappingRepoTable
+    def __init__(self, eventTriggerOutputSceneMappingTable: Table, context: Connection):
+        self.__eventTriggerOutputSceneMappingRepoTable = eventTriggerOutputSceneMappingTable
         self.__context = context
     
     def InsertManyWithCustomDataType1(self, l: list):
@@ -46,7 +47,7 @@ class eventTriggerOutputSceneMappingRepo():
                 "Time": l[i].get("time", None)
             }
             values.append(d)
-        if values == []:
+        if not values:
             return
         try:
             self.__context.execute(ins, values)
