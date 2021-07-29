@@ -8,11 +8,11 @@ import time
 class userData():
     __id: int
     __refreshToken: str
-    __endUserProfileId: str
+    __dormitoryId: str
     
-    def __init__(self, refreshToken: str, endUserProfileId: str):
+    def __init__(self, refreshToken: str, dormitoryId: str):
        self.__refreshToken = refreshToken
-       self.__endUserProfileId = endUserProfileId
+       self.__dormitoryId = dormitoryId
        
     @property
     def RefreshToken(self):
@@ -23,9 +23,9 @@ class userData():
         self.__refreshToken = refreshToken
         
     @property
-    def EndUserProfileId(self):
-        return self.__endUserProfileId
+    def DormitoryId(self):
+        return self.__dormitoryId
     
-    @EndUserProfileId.setter
-    def EndUserProfileId(self, EndUserProfileId: str):
-        self.__endUserProfileId = EndUserProfileId
+    @DormitoryId.setter
+    def DormitoryId(self, dormitoryId: str):
+        self.__dormitoryId = dormitoryId

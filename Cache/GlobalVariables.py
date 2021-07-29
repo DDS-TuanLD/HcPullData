@@ -8,12 +8,12 @@ class MetaCache(type):
     
 class GlobalVariables(metaclass=MetaCache):
     __refreshToken: str
-    __endUserId: str
+    __dormitoryId: str
     __pullCloudStatus: int
     __numberOfPullApiSuccess: int
 
     def __init__(self):
-        self.__endUserId = ""
+        self.__dormitoryId = ""
         self.__refreshToken = ""
         self.__pullCloudStatus = 0
         self.__numberOfPullApiSuccess = 0
@@ -35,12 +35,12 @@ class GlobalVariables(metaclass=MetaCache):
         self.__refreshToken = refreshToken
 
     @property
-    def EndUserId(self):
-        return self.__endUserId
+    def DormitoryId(self):
+        return self.__dormitoryId
     
-    @EndUserId.setter
-    def EndUserId(self, EndUserId: str):
-        self.__endUserId = EndUserId
+    @DormitoryId.setter
+    def DormitoryId(self, DormitoryId: str):
+        self.__dormitoryId = DormitoryId
      
     @property
     def PullCloudErrorState(self):

@@ -59,7 +59,7 @@ class RdHc(IController):
                     item = self.__mqttServices.receive_data_queue.get()
                     self.__mqttHandler.handler(item)
                     self.__mqttServices.receive_data_queue.task_done()
-                if self.__globalVariables.EndUserId != "" and self.__globalVariables.RefreshToken != "":
+                if self.__globalVariables.DormitoryId != "" and self.__globalVariables.RefreshToken != "":
                     return
 
     async def __HcReportPullCloudStatus(self):
@@ -78,7 +78,7 @@ class RdHc(IController):
                 exit()
 
     async def __HcDevicePullHandler(self):
-        while self.__globalVariables.EndUserId == "" or self.__globalVariables.RefreshToken == "":
+        while self.__globalVariables.DormitoryId == "" or self.__globalVariables.RefreshToken == "":
             await asyncio.sleep(1)
         
         self.__ledService.ServiceLedControl.On()

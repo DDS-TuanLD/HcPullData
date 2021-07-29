@@ -38,11 +38,11 @@ class HttpRequest():
         return self
 class Http():
     
-    def CreateNewHttpHeader(self, token: str = "", endProfileId: str = "", cookie: str = ""):
+    def CreateNewHttpHeader(self, token: str = "", dormitoryId: str = "", cookie: str = ""):
         newHttpHeader = CaseInsensitiveDict()
         newHttpHeader["Accept"] = "application/json"
         newHttpHeader["Authorization"] = "Bearer " + token
-        newHttpHeader["X-EndUserProfileId"] = endProfileId
+        newHttpHeader["X-DormitoryId"] = dormitoryId
         newHttpHeader["Cookie"] = cookie
         return newHttpHeader
     

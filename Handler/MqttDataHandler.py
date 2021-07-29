@@ -51,11 +51,11 @@ class MqttDataHandler(IHandler):
 
     def __handlerCmdHcConnectToCloud(self, data):
         try:
-            endUserProfileId = data["END_USER_PROFILE_ID"]
+            dormitoryId = data["DORMITORY_ID"]
             refreshToken = data["REFRESH_TOKEN"]
-            self.__globalVariables.EndUserId = str(endUserProfileId)
+            self.__globalVariables.DormitoryId = dormitoryId
             self.__globalVariables.RefreshToken = refreshToken
-            userDt = userData(refreshToken=refreshToken, endUserProfileId=str(endUserProfileId))
+            userDt = userData(refreshToken=refreshToken, dormitoryId=dormitoryId)
             rel = self.__db.Services.UserdataServices.FindUserDataById(id=1)
             dt = rel.first()
             if dt is not None:

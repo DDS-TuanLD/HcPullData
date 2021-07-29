@@ -78,13 +78,12 @@ class System:
         return r
 
     async def SendHttpRequestTotUrl(self, h: Http, url: str, body: dict):
-        endUser = self.__globalVariables.EndUserId
         token = await self.__getToken(h)
         if token == "":
             self.__globalVariables.PullCloudErrorState = const.NO_SERVER_RESPONSE
             return None
         cookie = f"Token={token}"
-        header = h.CreateNewHttpHeader(cookie = cookie, endProfileId=self.__globalVariables.EndUserId)
+        header = h.CreateNewHttpHeader(cookie = cookie, dormitoryId=self.__globalVariables.DormitoryId)
         req = h.CreateNewHttpRequest(url=url, header=header)
         session = aiohttp.ClientSession()
         res = await h.Post(session, req)
@@ -108,7 +107,7 @@ class System:
 
         tokenUrl = const.SERVER_HOST + const.TOKEN_URL
         cookie = f"RefreshToken={refreshToken}"
-        header = http.CreateNewHttpHeader(cookie = cookie, endProfileId=self.__globalVariables.EndUserId)
+        header = http.CreateNewHttpHeader(cookie = cookie, dormitoryId=self.__globalVariables.DormitoryId)
         req = http.CreateNewHttpRequest(url=tokenUrl, header=header)
 
         session = aiohttp.ClientSession()
