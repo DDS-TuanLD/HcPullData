@@ -14,4 +14,8 @@ class eventTriggerServices():
         
     def FindEventTriggerWithCondition(self, condition: BinaryExpression):
        rel = self.__eventTriggerRepo.FindWithCondition(condition)
-       return rel 
+       return rel
+
+    def FindAllEventTrigger(self):
+        rel = self.__eventTriggerRepo.FindAll()
+        return rel

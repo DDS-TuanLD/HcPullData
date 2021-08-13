@@ -5,7 +5,8 @@ import asyncio
 import datetime
 from sqlalchemy.engine.base import Connection
 
-class groupingRepo():
+
+class groupingRepo:
     __groupingTable: Table
     __context: Connection
     
@@ -35,7 +36,7 @@ class groupingRepo():
             
             d = {
                 'GroupingId': groupingId,
-                'GroupUnicastId': l[i].get('unicastId', None),
+                'GroupingUnicastId': l[i].get('unicastId', None),
                 'Name': l[i].get('name', None),
                 'CategoryId': l[i].get('categoryId', None),
                 'CreatedAt': createdAt,
@@ -54,3 +55,8 @@ class groupingRepo():
         ins = self.__groupingTable.select().where(condition)
         rel = self.__context.execute(ins)
         return rel   
+
+    def FindAll(self):
+        ins = self.__groupingTable.select()
+        rel = self.__context.execute(ins)
+        return rel

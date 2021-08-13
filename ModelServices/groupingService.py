@@ -3,7 +3,7 @@ from sqlalchemy import Table
 from sqlalchemy.engine.base import Connection
 from sqlalchemy.sql.expression import BinaryExpression
 
-class groupingServices():
+class groupingServices:
     __groupingRepo: groupingRepo
     
     def __init__(self, groupingTable: Table, context: Connection):
@@ -14,4 +14,8 @@ class groupingServices():
         
     def FindGroupWithCondition(self, condition: BinaryExpression):
         rel = self.__groupingRepo.FindWithCondition(condition)
+        return rel
+
+    def FindAllGroup(self):
+        rel = self.__groupingRepo.FindAll()
         return rel

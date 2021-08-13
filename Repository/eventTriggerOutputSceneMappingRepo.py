@@ -40,11 +40,11 @@ class eventTriggerOutputSceneMappingRepo:
         
         for i in range(len(l)):  
             d = {
-                "EventTriggerId": l[i].get("EventTriggerId", None),
-                "SceneId": l[i].get("SceneId", None),
-                "SceneUnicastID": l[i].get("SceneUnicastID", None),
-                "typerun": l[i].get("typerun", None),
-                "Time": l[i].get("time", None)
+                "EventTriggerId": l[i].get("EventTriggerId"),
+                "SceneId": l[i].get("SceneId"),
+                "SceneUnicastID": l[i].get("SceneUnicastID"),
+                "typerun": l[i].get("typerun"),
+                "Time": l[i].get("time")
             }
             values.append(d)
         if not values:

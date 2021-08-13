@@ -74,3 +74,8 @@ class eventTriggerRepo():
         ins = self.__eventTriggerTable.select().where(condition)
         rel = self.__context.execute(ins)
         return rel
+
+    def FindAll(self):
+        ins = self.__eventTriggerTable.select()
+        rel = self.__context.execute(ins)
+        return rel

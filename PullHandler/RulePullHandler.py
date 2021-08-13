@@ -204,67 +204,68 @@ class RulePullHandler(IPull):
                 sceneIdForEventTriggerOutputSceneMappings.append(sceneId)
                 eventTriggerOutputSceneMappingArray.append(eventTriggerOutputSceneMappingObject)
 
-        deviceForEventTriggerInputDeviceMappingRecords = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerInputDeviceMappings))
-        deviceForEventTriggerInputDeviceMappingArray = deviceForEventTriggerInputDeviceMappingRecords.fetchall()
-        for device in range(len(deviceForEventTriggerInputDeviceMappingArray)):
-            eventTriggerInputDeviceMappingArray[device]['DeviceUnicastId'] = \
-                deviceForEventTriggerInputDeviceMappingArray[device]['DeviceUnicastId']
+        deviceRecords = db.Services.DeviceServices.FindAllDevice()
+        deviceIdUnicastMapping = {}
+
+        for deviceRecord in deviceRecords:
+            deviceId = deviceRecord['DeviceId']
+            deviceUnicastId = deviceRecord['DeviceUnicastId']
+            deviceIdUnicastMapping[deviceId] = deviceUnicastId
+
+        for i in range(len(deviceIdForEventTriggerInputDeviceMappings)):
+            deviceId = deviceIdForEventTriggerInputDeviceMappings[i]
+            eventTriggerInputDeviceMappingArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.EventTriggerInputDeviceMappingServices.AddManyEventTriggerInputDeviceMappingWithCustomData(
             eventTriggerInputDeviceMappingArray)
 
-        deviceForEventTriggerInputDeviceSetupValueRecords = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerInputDeviceSetupValues))
-        deviceForEventTriggerInputDeviceSetupValueArray = deviceForEventTriggerInputDeviceSetupValueRecords.fetchall()
-        for device in range(len(deviceForEventTriggerInputDeviceSetupValueArray)):
-            eventTriggerInputDeviceSetupValueArray[device]['DeviceUnicastId'] = \
-                deviceForEventTriggerInputDeviceSetupValueArray[device]['DeviceUnicastId']
+        for i in range(len(deviceIdForEventTriggerInputDeviceSetupValues)):
+            deviceId = deviceIdForEventTriggerInputDeviceSetupValues[i]
+            eventTriggerInputDeviceSetupValueArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.EventTriggerInputDeviceSetupValueServices.AddManyEventTriggerInputDeviceSetupValueWithCustomData(
             eventTriggerInputDeviceSetupValueArray)
 
-        deviceForEventTriggerOutputDeviceMappingRecords = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerOutputDeviceMappings))
-        deviceForEventTriggerOutputDeviceMappingArray = deviceForEventTriggerOutputDeviceMappingRecords.fetchall()
-        for device in range(len(deviceForEventTriggerOutputDeviceMappingArray)):
-            eventTriggerOutputDeviceMappingArray[device]['DeviceUnicastId'] = \
-                deviceForEventTriggerOutputDeviceMappingArray[device]['DeviceUnicastId']
+        for i in range(len(deviceIdForEventTriggerOutputDeviceMappings)):
+            deviceId = deviceIdForEventTriggerOutputDeviceMappings[i]
+            eventTriggerOutputDeviceMappingArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.EventTriggerOutputDeviceMappingServices.AddManyEventTriggerOutputDeviceMappingWithCustomData(
             eventTriggerOutputDeviceMappingArray)
 
-        deviceForEventTriggerOutputDeviceSetupValueRecords = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForEventTriggerOutputDeviceSetupValues))
-        deviceForEventTriggerOutputDeviceSetupValueArray = deviceForEventTriggerOutputDeviceSetupValueRecords.fetchall()
-        for device in range(len(deviceForEventTriggerOutputDeviceSetupValueArray)):
-            eventTriggerOutputDeviceSetupValueArray[device]['DeviceUnicastId'] = \
-                deviceForEventTriggerOutputDeviceSetupValueArray[device]['DeviceUnicastId']
+        for i in range(len(deviceIdForEventTriggerOutputDeviceSetupValues)):
+            deviceId = deviceIdForEventTriggerOutputDeviceSetupValues[i]
+            eventTriggerOutputDeviceSetupValueArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyEventTriggerOutputDeviceSetupValueWithCustomData(
             eventTriggerOutputDeviceSetupValueArray)
 
-        groupForEventTriggerOutputGroupingMappingRecords = db.Services.GroupingServices.FindGroupWithCondition(
-            db.Table.GroupingTable.c.GroupingId.in_(groupIdForEventTriggerOutputGroupingMappings))
-        groupForEventTriggerOutputGroupingMappingRecordArray = \
-            groupForEventTriggerOutputGroupingMappingRecords.fetchall()
-        for group in range(len(groupForEventTriggerOutputGroupingMappingRecordArray)):
-            eventTriggerOutputGroupingMappingArray[group]['GroupUnicastId'] = \
-                groupForEventTriggerOutputGroupingMappingRecordArray[group]['GroupUnicastId']
+        groupRecords = db.Services.GroupingServices.FindAllGroup()
+        groupIdUnicastMapping = {}
+
+        for groupRecord in groupRecords:
+            groupId = groupRecord['GroupingId']
+            groupUnicastId = groupRecord['GroupingUnicastId']
+            groupIdUnicastMapping[groupId] = groupUnicastId
+
+        for i in range(len(groupIdForEventTriggerOutputGroupingMappings)):
+            groupId = groupIdForEventTriggerOutputGroupingMappings[i]
+            eventTriggerOutputGroupingMappingArray[i]['GroupUnicastId'] = groupIdUnicastMapping.get(groupId)
         db.Services.EventTriggerOutputGroupingMappingServices.AddManyEventTriggerOutputGroupMappingWithCustomData(
             eventTriggerOutputGroupingMappingArray)
 
-        groupForEventTriggerOutputGroupingSetupValueRecords = db.Services.GroupingServices.FindGroupWithCondition(
-            db.Table.GroupingTable.c.GroupingId.in_(groupIdForEventTriggerOutputGroupingSetupValues))
-        groupForEventTriggerOutputGroupingSetupValueArray = \
-            groupForEventTriggerOutputGroupingSetupValueRecords.fetchall()
-        for group in range(len(groupForEventTriggerOutputGroupingSetupValueArray)):
-            eventTriggerOutputGroupingSetupValueArray[group]['GroupUnicastId'] = \
-                groupForEventTriggerOutputGroupingSetupValueArray[group]['GroupUnicastId']
+        for i in range(len(groupIdForEventTriggerOutputGroupingSetupValues)):
+            groupId = groupIdForEventTriggerOutputGroupingSetupValues[i]
+            eventTriggerOutputGroupingSetupValueArray[i]['GroupUnicastId'] = groupIdUnicastMapping.get(groupId)
         db.Services.EventTriggerOutputGroupingSetupValueServices.AddManyEventTriggerOutputGroupSetupValueWithCustomData(
             eventTriggerOutputGroupingSetupValueArray)
 
-        sceneForEventTriggerOutputSceneMappingRecords = db.Services.EventTriggerServices.FindEventTriggerWithCondition(
-            db.Table.EventTriggerTable.c.EventTriggerId.in_(sceneIdForEventTriggerOutputSceneMappings))
-        sceneForEventTriggerOutputSceneMappingArray = sceneForEventTriggerOutputSceneMappingRecords.fetchall()
-        for scene in range(len(sceneForEventTriggerOutputSceneMappingArray)):
-            eventTriggerOutputSceneMappingArray[scene]['SceneUnicastID'] = \
-                sceneForEventTriggerOutputSceneMappingArray[scene]['SceneUnicastID']
+        sceneRecords = db.Services.EventTriggerServices.FindAllEventTrigger()
+        sceneIdUnicastMapping = {}
+
+        for sceneRecord in sceneRecords:
+            sceneId = sceneRecord['EventTriggerId']
+            sceneUnicastId = sceneRecord['SceneUnicastID']
+            sceneIdUnicastMapping[sceneId] = sceneUnicastId
+
+        for i in range(len(sceneIdForEventTriggerOutputSceneMappings)):
+            sceneId = sceneIdForEventTriggerOutputSceneMappings[i]
+            eventTriggerOutputSceneMappingArray[i]['SceneUnicastID'] = sceneIdUnicastMapping.get(sceneId)
         db.Services.EventTriggerOutputSceneMappingServices.AddManyEventTriggerOutputSceneMappingWithCustomDataType2(
             eventTriggerOutputSceneMappingArray)

@@ -7,7 +7,7 @@ from sqlalchemy.engine.base import Connection
 from Model.device import device
 
 
-class deviceRepo():
+class deviceRepo:
     __deviceTable: Table
     __context: Connection
 
@@ -74,6 +74,11 @@ class deviceRepo():
 
     def FindWithCondition(self, condition: BinaryExpression):
         ins = self.__deviceTable.select().where(condition)
+        rel = self.__context.execute(ins)
+        return rel
+
+    def FindAll(self):
+        ins = self.__deviceTable.select()
         rel = self.__context.execute(ins)
         return rel
 

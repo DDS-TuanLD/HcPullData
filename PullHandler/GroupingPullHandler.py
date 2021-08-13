@@ -38,11 +38,16 @@ class GroupingPullHandler(IPull):
                 }
                 deviceIdForGroupDeviceMapping.append(deviceId)
                 groupDeviceMappingArray.append(groupingObject)
-                
-        deviceForGroupDeviceMappingRecords = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForGroupDeviceMapping))
-        deviceForGroupDeviceMappingArray = deviceForGroupDeviceMappingRecords.fetchall()
-        for device in range(len(deviceForGroupDeviceMappingArray)):
-            groupDeviceMappingArray[device]['DeviceUnicastId'] = \
-                deviceForGroupDeviceMappingArray[device]['DeviceUnicastId']
+
+        deviceRecords = db.Services.DeviceServices.FindAllDevice()
+        deviceIdUnicastMapping = {}
+
+        for deviceRecord in deviceRecords:
+            deviceId = deviceRecord['DeviceId']
+            deviceUnicastId = deviceRecord['DeviceUnicastId']
+            deviceIdUnicastMapping[deviceId] = deviceUnicastId
+
+        for i in range(len(deviceIdForGroupDeviceMapping)):
+            deviceId = deviceIdForGroupDeviceMapping[i]
+            groupDeviceMappingArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.GroupingDeviceMappingServices.AddManyGroupingDeviceMappingWithCustomData(groupDeviceMappingArray)

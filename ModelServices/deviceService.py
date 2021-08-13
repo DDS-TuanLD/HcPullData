@@ -16,3 +16,7 @@ class deviceServices():
     def FindDeviceWithCondition(self, condition: BinaryExpression):
         rel = self.__deviceRepo.FindWithCondition(condition)
         return rel
+
+    def FindAllDevice(self):
+        rel = self.__deviceRepo.FindAll()
+        return rel

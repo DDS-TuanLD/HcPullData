@@ -59,20 +59,22 @@ class ScenePullHandler(IPull):
                 deviceIdForSceneOutputDeviceSetupValueList.append(deviceId)
                 sceneOutputDeviceSetupValueArray.append(sceneOutputDeviceSetupValueObject)
 
-        deviceForSceneOutputDeviceMappingRecord = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForSceneOutputDeviceMappingList))
-        deviceForSceneOutputDeviceMappingArray = deviceForSceneOutputDeviceMappingRecord.fetchall()
-        for device in range(len(deviceForSceneOutputDeviceMappingArray)):
-            sceneOutputDeviceMappingArray[device]['DeviceUnicastId'] = \
-                deviceForSceneOutputDeviceMappingArray[device]['DeviceUnicastId']
+        deviceRecords = db.Services.DeviceServices.FindAllDevice()
+        deviceIdUnicastMapping = {}
+
+        for deviceRecord in deviceRecords:
+            deviceId = deviceRecord['DeviceId']
+            deviceUnicastId = deviceRecord['DeviceUnicastId']
+            deviceIdUnicastMapping[deviceId] = deviceUnicastId
+
+        for i in range(len(deviceIdForSceneOutputDeviceMappingList)):
+            deviceId = deviceIdForSceneOutputDeviceMappingList[i]
+            sceneOutputDeviceMappingArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.EventTriggerOutputDeviceMappingServices.AddManyEventTriggerOutputDeviceMappingWithCustomData(
             sceneOutputDeviceMappingArray)
 
-        deviceForSceneOutputDeviceSetupValueRecords = db.Services.DeviceServices.FindDeviceWithCondition(
-            db.Table.DeviceTable.c.DeviceId.in_(deviceIdForSceneOutputDeviceSetupValueList))
-        deviceForSceneOutputDeviceSetupValueArray = deviceForSceneOutputDeviceSetupValueRecords.fetchall()
-        for device in range(len(deviceForSceneOutputDeviceSetupValueArray)):
-            sceneOutputDeviceSetupValueArray[device]['DeviceUnicastId'] = \
-                deviceForSceneOutputDeviceSetupValueArray[device]['DeviceUnicastId']
+        for i in range(len(deviceIdForSceneOutputDeviceSetupValueList)):
+            deviceId = deviceIdForSceneOutputDeviceSetupValueList[i]
+            sceneOutputDeviceSetupValueArray[i]['DeviceUnicastId'] = deviceIdUnicastMapping.get(deviceId)
         db.Services.EventTriggerOutputDeviceSetupValueServices.AddManyEventTriggerOutputDeviceSetupValueWithCustomData(
             sceneOutputDeviceSetupValueArray)

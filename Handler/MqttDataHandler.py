@@ -55,7 +55,7 @@ class MqttDataHandler(IHandler):
             refreshToken = data["REFRESH_TOKEN"]
             self.__globalVariables.DormitoryId = dormitoryId
             self.__globalVariables.RefreshToken = refreshToken
-            userDt = userData(refreshToken=refreshToken, dormitoryId=dormitoryId)
+            userDt = userData(refreshToken=refreshToken, dormitoryId=dormitoryId, allowChangeAccount=False)
             rel = self.__db.Services.UserdataServices.FindUserDataById(id=1)
             dt = rel.first()
             if dt is not None:
