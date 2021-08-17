@@ -50,7 +50,9 @@ class System:
         
     def StopOthersPythonProgramAndCronjob(self):
         t = Terminal()
-        
+
+        t.Execute("/etc/init.d/cron stop")
+
         s = t.ExecuteWithResult(f'ps | grep python3 RDhcPy/main.py')
         dt = s[1].split(" ")
         otherPythonProgramPort = ""
@@ -58,10 +60,8 @@ class System:
             if dt[i] != "":
                 otherPythonProgramPort = dt[i]
                 break
-        s = t.Execute(f'kill -9 {otherPythonProgramPort}')
+        t.Execute(f'kill -9 {otherPythonProgramPort}')
 
-        s2 = t.Execute("/etc/init.d/cron stop")
-        
     def StartCronjob(self):
         t = Terminal()
         t.Execute("/etc/init.d/cron start")

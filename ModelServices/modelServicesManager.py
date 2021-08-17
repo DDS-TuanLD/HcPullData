@@ -23,26 +23,6 @@ from sqlalchemy.engine.base import Connection
 
 
 class modelServicesManager:
-    __systemConfigurationServices: systemConfigurationServices
-    __userDataService: userDataServices
-    __deviceAttributeValueService: deviceAttributeValueServices
-    __deviceService: deviceServices
-    __groupingService: groupingServices
-    __groupingDeviceMappingService: groupingDeviceMappingServices
-    __deviceAttributeService: deviceAttributeServices
-    __groupIdService: groupIdServices
-    __eventTriggerService: eventTriggerServices  
-    __eventTriggerIdService: eventTriggerIdServices
-    __eventTriggerTypeService: eventTriggerTypeServices
-    __eventTriggerInputDeviceMappingService: eventTriggerInputDeviceMappingServices
-    __eventTriggerInputDeviceSetupValueService: eventTriggerInputDeviceSetupValueServices
-    __eventTriggerInputGroupingMappingService: eventTriggerInputGroupingMappingServices
-    __eventTriggerOutputDeviceMappingService: eventTriggerOutputDeviceMappingServices
-    __eventTriggerOutputDeviceSetupValueService: eventTriggerOutputDeviceSetupValueServices
-    __eventTriggerOutputGroupingMappingServices: eventTriggerOutputGroupingMappingServices
-    __eventTriggerOutputGroupingSetupValueService: eventTriggerOutputGroupingSetupValueServices
-    __eventTriggerOutputSceneMappingService: eventTriggerOutputSceneMappingServices
-    __irDeviceAttributeValueService: irDeviceAttributeValueServices
 
     def __init__(self, table: tableManager, context: Connection):
         self.__systemConfigurationServices = systemConfigurationServices(table.SystemConfigurationTable, context)

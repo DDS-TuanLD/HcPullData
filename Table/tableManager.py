@@ -22,27 +22,7 @@ from sqlalchemy import MetaData
 
 
 class tableManager:
-    __systemConfigurationTable: systemConfigurationTable
-    __userDataTable: userDataTable
-    __deviceAttributeTable: deviceAttributeValueTable
-    __deviceTable: deviceTable
-    __groupingTable: groupingTable
-    __groupingDeviceMappingTable: groupingDeviceMappingTable
-    __eventTriggerTable: eventTriggerTable
-    __deviceAttributeTable: deviceAttributeTable
-    __eventTriggerIDTable: eventTriggerIDTable
-    __groupIdTable: groupIDTable
-    __eventTriggerTypeTable: eventTriggerTypeTable
-    __eventTriggerInputDeviceMappingTable: eventTriggerInputDeviceMappingTable
-    __eventTriggerInputDeviceSetupValueTable: eventTriggerInputDeviceSetupValueTable
-    __eventTriggerInputGroupingMappingTable: eventTriggerInputGroupingMappingTable
-    __eventTriggerOutputDeviceMappingTable: eventTriggerOutputDeviceMappingTable
-    __eventTriggerOutputDeviceSetupValueTable: eventTriggerOutputDeviceSetupValueTable
-    __eventTriggerOutputGroupingMappingTable: eventTriggerOutputGroupingMappingTable
-    __eventTriggerOutputGroupingSetupValueTable: eventTriggerOutputGroupingSetupValueTable
-    __eventTriggerOutputSceneMappingTable: eventTriggerOutputSceneMappingTable
-    __irDeviceAttributeValueTable: irDeviceAttributeValueTable
-
+  
     def __init__(self, metadata: MetaData):
         self.__systemConfigurationTable = systemConfigurationTable(metadata)
         self.__userDataTable = userDataTable(metadata)
